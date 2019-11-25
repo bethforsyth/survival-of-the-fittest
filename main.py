@@ -15,7 +15,6 @@ class organism:
             return True
 
 class environment:
-
     def __init__(self):
         self.food = 3
 
@@ -35,4 +34,4 @@ for years in range(10):
         logging.debug("reproducing!")
 
 
-#test pushing
+#test pushing x2
