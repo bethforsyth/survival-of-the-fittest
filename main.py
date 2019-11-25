@@ -28,11 +28,10 @@ my_organism = organism()
 my_env = environment()
 
 for years in range(10):
-    my_env.live(organism)
-    if organism.death == true:
+    my_env.live(my_organism)
+    if my_organism.death() == True:
         break
-    elif organism.reproduce== true:
+    elif my_organism.reproduce() == True:
         logging.debug("reproducing!")
-
 
 #test pushing
