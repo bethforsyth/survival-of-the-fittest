@@ -5,7 +5,8 @@ import random
 class organism:
     def __init__(self):
         self.code = "0001011010101"
-        self.size = 10
+        self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
+        # self.size = 10
         self.health = 5
         self.dead = False
 
