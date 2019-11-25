@@ -32,11 +32,19 @@ class orgs:
                 self.organisms.append(new_org)
 
     def mutate(self):
-        ''' Randomly increment or decrement the size trait by 1.'''
-        if random.choice([1,2]) == 1:
-            self.size += 1
-        else:
-            self.size -= 1
+        ''' Randomly select a trait and randomly increment or decrement the size trait by 1. Randomly. '''
+
+
+        #for each organism (some percentage get the murtation applied)
+
+        for org in self.organisms:
+            logging.debug("Mutating")
+            random_trait = random.choice(list(org.traits))
+            print(random_trait)
+            if random.choice([1,2]) == 1:
+                org.traits[random_trait] += 1
+            else:
+                org.traits[random_trait] -= 1
 
     def translation(self):
         # Turn the genetic code into characteristics.
