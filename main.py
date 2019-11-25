@@ -14,7 +14,7 @@ class organism:
         self.dead = False
 
     def get_genes(self):
-        genes = []
+        self.genes = []
         start_pos = 0
         end_pos = 0
         codon = [0, 0, 0]
@@ -29,14 +29,13 @@ class organism:
             elif is_end_codon(codon) and in_gene:
                 end_pos = i
                 in_gene = False
-                genes.append(self.code[start_pos:end_pos])
-        return genes
+                self.genes.append(self.code[start_pos:end_pos])
+        return self.genes
 
 
 # This should give us the start of a gene approximately 1/100 codons.
 def is_start_codon(codon):
     if codon[0] == 0 and codon[1] == 1:
-        print"START"
         return True
     else:
         return False
@@ -45,7 +44,6 @@ def is_start_codon(codon):
 # This should give us the end of a gene approximately 1/100 codons.
 def is_end_codon(codon):
     if codon[0] == 9 and codon[1] == 8:
-        print("END")
         return True
     else:
         return False
@@ -53,7 +51,7 @@ def is_end_codon(codon):
 
 class orgs:
     def __init__(self):
-        self.organisms = [organism() for i in range(1)]
+        self.organisms = [organism() for i in range(2)]
 
     def death(self):
         list_index = 0
@@ -68,7 +66,8 @@ class orgs:
         new_orgs = []
         for org in self.organisms:
             if org.health > 6:
-                # logging.debug("Reproducing")
+                logging.debug("Reproducing")
+
                 # Giving birth costs health.
                 org.health -= 1
 
@@ -83,9 +82,7 @@ class orgs:
 
     def translation(self):
         for org in self.organisms:
-            genes = org.get_genes()
-            for gene in genes:
-                print(gene)
+            org.get_genes()
 
 
 class environment:
