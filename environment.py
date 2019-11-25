@@ -24,7 +24,6 @@ class environment:
         self.grid = self.grid_create()
         self.standard_environment()
 
-
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
 
