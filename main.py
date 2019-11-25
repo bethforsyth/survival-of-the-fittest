@@ -27,9 +27,12 @@ class environment:
 my_organism = organism()
 my_env = environment()
 
-for (years in range(10)):
+for years in range(10):
     my_env.live(organism)
     if organism.death == true:
         break
     elif organism.reproduce== true:
-        logging.debug("reproducing"!)
+        logging.debug("reproducing!")
+
+
+#test pushing
