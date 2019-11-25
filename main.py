@@ -1,11 +1,11 @@
 import logging
 import copy
-import random 
+import random
 
 class organism:
     def __init__(self):
         self.code = []
-        for j in range(random.randint(100,1000)):
+        for j in range(1000):
             self.code.append(random.randint(0,9))
         logging.debug("Code is {}".format(self.code))
         self.size = 10
@@ -18,26 +18,25 @@ class organism:
         end_pos = 0
         codon = [0,0,0]
         in_gene = False
-        for i in range (len(self.code)):
+        for i in range(len(self.code)):
             codon[(i%3)]= self.code[i]
             if i%3 == 2:
-                ## Got a full codon, check what its doing
-                if is_start_codon(codon) and in_gene == false:
+                # Got a full codon, check what it's doing
+                if is_start_codon(codon) and in_gene == False:
                     in_gene = True
                     start_pos = i-3
-                elif is_end_codon(codon) and in_gene == true:
+                elif is_end_codon(codon) and in_gene == True:
                     end_pos = i
                     in_gene = False
                     genes.append = [self.code[start_pos:end_pos]]
-                    start_pos = 0
-                    end_pos = 0
 
+        print(genes)
         return genes
 
 
 
 ## This should give us the start of a gene approximately
-## 1/100 codons. 
+## 1/100 codons.
 def is_start_codon(codon):
     if codon[0] == 0 and codon[1] == 1:
         True
@@ -45,7 +44,7 @@ def is_start_codon(codon):
         False
 
 ## This should give us the end of a gene approximately
-## 1/100 codons. 
+## 1/100 codons.
 def is_end_codon(codon):
     if codon[0] == 9 and codon[1] == 8:
         True
@@ -78,6 +77,7 @@ class orgs:
     def translation(self):
         for org in self.organisms:
             org.get_genes()
+            print("Got genes!")
 
 
 class environment:
