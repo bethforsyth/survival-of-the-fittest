@@ -10,7 +10,7 @@ class environment:
         counter3=0
         while counter2<21:
             global envir
-            envir.append(position(counter3, counter1, counter2).location)
+            envir.append(self.position(counter3, counter1, counter2).location)
             counter1+=1
             counter3+=1
 
