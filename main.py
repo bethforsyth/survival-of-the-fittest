@@ -1,5 +1,6 @@
 import logging
 import copy
+import random
 
 class organism:
     def __init__(self):
@@ -30,12 +31,15 @@ class orgs:
                 self.organisms.append(new_org)
 
     def mutate(self):
-        return
+        ''' Randomly increment or decrement the size trait by 1.'''
+        if random.choice([1,2]) == 1:
+            self.size += 1
+        else:
+            self.size -= 1
 
     def translation(self):
         # Turn the genetic code into characteristics.
         return
-
 
 class environment:
 
@@ -71,10 +75,3 @@ for years in range(10):
 
     organisms.death()
     organisms.reproduce()
-
-
-
-
-
-
-
