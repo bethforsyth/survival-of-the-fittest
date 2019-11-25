@@ -25,11 +25,18 @@ class orgs:
                 list_index += 1
 
     def reproduce(self):
+        new_orgs = []
         for org in self.organisms:
             if org.health > 6:
                 logging.debug("Reproducing")
+                # Giving birth costs health.
+                org.health -= 1
+
+                # Create a baby! Obviously the baby is born with full health.
                 new_org = copy.deepcopy(org)
-                self.organisms.append(new_org)
+                new_org.health = 10
+                new_orgs.append(new_org)
+        self.organisms += new_orgs
 
     def mutate(self):
         ''' Randomly select a trait and randomly increment or decrement the size trait by 1. Randomly. '''
@@ -53,21 +60,20 @@ class orgs:
 class environment:
 
     def __init__(self):
-        self.food = 3
+        self.food = 30
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
 
         # Environment acts on organisms
-        return
 
+        return
 
     def live(self, organisms):
         for num in range(len(organisms.organisms)):
             organism = organisms.organisms[num]
             organism.health += self.food
             self.food -= 1
-
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -84,3 +90,5 @@ for years in range(10):
 
     organisms.death()
     organisms.reproduce()
+
+    logging.debug("we have {}".format(len(organisms.organisms)))
