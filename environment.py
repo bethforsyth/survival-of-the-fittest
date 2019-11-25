@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 envir = []
 class position:
     def __init__(self, location_id, x, y):
@@ -43,3 +44,10 @@ counter3=0
 #         counter2+=1
 
 print(locations)
+=======
+class location():
+    """docstring for location"""
+    def __init__(self, arg):
+        super(location, self).__init__()
+        self.arg = arg
+>>>>>>> 435439dd3a84f4e748fac985101502c54a12f915
