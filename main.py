@@ -3,9 +3,9 @@ import copy
 
 class organism:
     def __init__(self):
-        self.code = "0001011010101"
+        self.code = []
         self.size = 10
-        self.health = 5
+        self.health = 1
         self.dead = False
 
 
@@ -40,7 +40,7 @@ class orgs:
 class environment:
 
     def __init__(self):
-        self.food = 3
+        self.food = 30
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
@@ -71,7 +71,7 @@ for years in range(10):
 
     organisms.death()
     organisms.reproduce()
-
+    logging.debug("we have {}".format(len(organisms.organisms)))
 
 
 
