@@ -1,7 +1,7 @@
 class locations:
     def __init__(self, x, y):
         self.location=[x,y]
-
+# test
 grid = []
 counter1=0
 counter2=0
