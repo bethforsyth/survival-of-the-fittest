@@ -9,47 +9,46 @@ class organism:
             self.code.append(random.randint(0,9))
         logging.debug("Code is {}".format(self.code))
         self.size = 10
-        self.health = 5
+        self.health = 10
         self.dead = False
 
     def get_genes(self):
-        genes = [[]]
+        genes = []
         start_pos = 0
         end_pos = 0
         codon = [0,0,0]
         in_gene = False
-        for i in range(len(self.code)):
-            codon[(i%3)]= self.code[i]
-            if i%3 == 2:
-                # Got a full codon, check what it's doing
-                if is_start_codon(codon) and in_gene == False:
-                    in_gene = True
-                    start_pos = i-3
-                elif is_end_codon(codon) and in_gene == True:
-                    end_pos = i
-                    in_gene = False
-                    genes.append = [self.code[start_pos:end_pos]]
-
-        print(genes)
+        for i in range(2, len(self.code)):
+            codon[0] = self.code[i-2]
+            codon[1] = self.code[i-1]
+            codon[2] = self.code[i]
+            if is_start_codon(codon) and in_gene == False:
+                in_gene = True
+                start_pos = i-2
+            elif is_end_codon(codon) and in_gene == True:
+                end_pos = i
+                in_gene = False
+                genes.append(self.code[start_pos:end_pos])
         return genes
-
 
 
 ## This should give us the start of a gene approximately
 ## 1/100 codons.
 def is_start_codon(codon):
     if codon[0] == 0 and codon[1] == 1:
-        True
+        print"START"
+        return True
     else:
-        False
+        return False
 
 ## This should give us the end of a gene approximately
 ## 1/100 codons.
 def is_end_codon(codon):
     if codon[0] == 9 and codon[1] == 8:
-        True
+        print("END")
+        return True
     else:
-        False
+        return False
 
 class orgs:
     def __init__(self):
@@ -65,39 +64,46 @@ class orgs:
                 list_index += 1
 
     def reproduce(self):
+        new_orgs = []
         for org in self.organisms:
             if org.health > 6:
-                logging.debug("Reproducing")
+                # logging.debug("Reproducing")
+                # Giving birth costs health.
+                org.health -= 1
+
+                # Create a baby! Obviously the baby is born with full health.
                 new_org = copy.deepcopy(org)
-                self.organisms.append(new_org)
+                new_org.health = 10
+                new_orgs.append(new_org)
+        self.organisms += new_orgs
 
     def mutate(self):
         return
 
     def translation(self):
         for org in self.organisms:
-            org.get_genes()
-            print("Got genes!")
+            genes = org.get_genes()
+            for gene in genes:
+                print(gene)
 
 
 class environment:
 
     def __init__(self):
-        self.food = 3
+        self.food = 30
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
 
         # Environment acts on organisms
-        return
 
+        return
 
     def live(self, organisms):
         for num in range(len(organisms.organisms)):
             organism = organisms.organisms[num]
             organism.health += self.food
             self.food -= 1
-
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -114,10 +120,4 @@ for years in range(10):
 
     organisms.death()
     organisms.reproduce()
-
-
-
-
-
-
-
+    logging.debug("we have {}".format(len(organisms.organisms)))

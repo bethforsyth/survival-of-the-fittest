@@ -2,8 +2,25 @@ Genetic traits
 Size/weight -- affects food consumption, fighting/food gathering ability?
 Skin type -- fur/skin/scales etc
 Warm/cold blooded
+Aggression
 
 Affected traits
 Temperature tolerance -- Affected by size/skin type/bloodedness
 Food consumpution -- Affected by size
 Food gathering ability -- Affected by size
+speed - how fast it CAN move, faster more energy consump
+strength - how well it can fight, thinking of size times strength
+size - how big, bigger = need more energy
+ability to breed (number of offsprings) = more offsprings = need more energy, offsprings weaker,
+territorial - increase aggressiveness when in animals "territory" 3
+aggressive - attacking animals
+shy - avoiding animals
+herbivority - how likely to eat herbivore food
+carnivority - how likely to eat carnivore
+
+environment
+temperature
+herbivore food
+carnivore food - dead animals
+obstacles
+Fighting ability -- size, aggression
