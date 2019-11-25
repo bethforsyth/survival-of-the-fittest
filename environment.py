@@ -73,4 +73,3 @@ class location():
 
     def meat_rots(self):
         self.meat_food -= (self.humidity * max(0, self.temperature) / 40) * self.meat_food
-
