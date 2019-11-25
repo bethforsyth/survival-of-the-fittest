@@ -3,9 +3,9 @@ import copy
 
 class organism:
     def __init__(self):
-        self.code = "0001011010101"
+        self.code = []
         self.size = 10
-        self.health = 5
+        self.health = 1
         self.dead = False
 
 
@@ -39,7 +39,7 @@ class orgs:
 
 class environment:
     def __init__(self):
-        self.food = 3
+        self.food = 30
 
     def position(self, location_id=1, x=0, y=0, temperature=0):
         global location
@@ -90,7 +90,7 @@ for years in range(10):
 
     organisms.death()
     organisms.reproduce()
-
+    logging.debug("we have {}".format(len(organisms.organisms)))
 
 
 
