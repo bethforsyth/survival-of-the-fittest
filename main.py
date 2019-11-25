@@ -8,11 +8,11 @@ class organism:
 
     def death(self):
         if self.health < 4:
-            return true
+            return True
 
     def reproduce(self):
         if self.health > 6:
-            return true
+            return True
 
 class environment:
 
@@ -27,9 +27,9 @@ class environment:
 my_organism = organism()
 my_env = environment()
 
-for (years in range(10)):
-    my_env.live(organism)
-    if organism.death == true:
+for years in range(10):
+    my_env.live(my_organism)
+    if organism.death == True:
         break
-    elif organism.reproduce== true:
-        logging.debug("reproducing"!)
+    elif organism.reproduce == True:
+        logging.debug("reproducing!")
