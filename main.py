@@ -8,11 +8,11 @@ class organism:
 
     def death(self):
         if self.health < 4:
-            return true
+            return True
 
     def reproduce(self):
         if self.health > 6:
-            return true
+            return True
 
 class environment:
 
