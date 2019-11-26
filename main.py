@@ -121,6 +121,7 @@ class orgs:
                     print("original code:", org.code)
                     print("changing " + str(random_length) + " nucleotides at index " + str(random_index))
                     new_code = []
+                    new_code_str = ""
                     for i in range(random_length):
                         new_code.append(random.choice(["1", "0"]))
                         new_code_str = "".join(new_code)
