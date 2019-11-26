@@ -64,15 +64,18 @@ class orgs:
             if random.randint(1, 4) == 1:
                 #duplication
                 def mutate_duplicate(self):
-                    logging.debug("Duplicating DNA")
-                    random_dup_index1 = random.randint(0,len(org.code)-1)
-                    random_dup_index2 = random.randint(0,len(org.code)-1)
-                    start_index = min(random_dup_index1, random_dup_index2)
-                    end_index = max(random_dup_index1, random_dup_index2)
+                    '''
+                    Duplicate piece of organism's code inbetween random indices.
+                    '''
+                    logging.debug("duplicate mutation")
+                    random_index1 = random.randint(0,len(org.code)-1)
+                    random_index2 = random.randint(0,len(org.code)-1)
+                    start_index = min(random_index1, random_index2)
+                    end_index = max(random_index1, random_index2)
                     #length_of_copy = end_index-start_index
                     mutated_code = (org.code[:start_index] +
                         org.code[start_index:end_index]*2 + org.code[end_index:])
-                    print("Old code: ", org.code, "\nNew code: ", mutated_code, "(Duplicated from %d to %d)"%(start_index, end_index))
+                    #print("Old code: ", org.code, "\nNew code: ", mutated_code, "(Duplicated from %d to %d)"%(start_index, end_index))
                     return(mutated_code)
                 mutate_duplicate(self)
 
@@ -86,9 +89,20 @@ class orgs:
                     code_as_list = []
                     for digit in org.code:
                         code_as_list.append(digit)
-                    code_as_list.pop(random.randrange(len(code_as_list)))
-                    print("original code: " + org.code + " mutated code:" + ("".join(code_as_list)))
-                    return "".join(code_as_list)
+
+                    random_index1 = random.randint(0,len(org.code)-1)
+                    random_index2 = random.randint(0,len(org.code)-1)
+                    start_index = min(random_index1, random_index2)
+                    end_index = max(random_index1, random_index2)
+
+                    print("start, end are", start_index, end_index)
+                    for index in range(end_index, start_index, -1):
+                        print("length of code_as_list is ", len(code_as_list), "index is ", index)
+                        del code_as_list[index]
+                    mutated_code = "".join(code_as_list)
+                    print('\n', org.code, 'is the original code\n', mutated_code, 'is the mutated code')
+                    org.code = mutated_code
+                    return mutated_code
                 mutate_deletion(self)
 
             elif random.randint(1, 4) == 3:
@@ -103,7 +117,7 @@ class orgs:
                     code_as_list = list(org.code)
                     code_as_list.insert(random.randint(0, len(org.code)), random.choice(["1","0"]))
                     new_code = ''.join(code_as_list)
-                    print("original code: " + org.code + " mutated code:" + new_code)
+                    #print("original code: " + org.code + " mutated code:" + new_code)
                     return new_code
 
                 addition_mutation(self)
@@ -118,14 +132,15 @@ class orgs:
                     #random pick a location
                     random_index = random.randint(0, len(org.code)-1)
                     #change the string
-                    print("original code:", org.code)
-                    print("changing " + str(random_length) + " nucleotides at index " + str(random_index))
+                    #print("original code:", org.code)
+                    #print("changing " + str(random_length) + " nucleotides at index " + str(random_index))
                     new_code = []
+                    new_code_str =""
                     for i in range(random_length):
                         new_code.append(random.choice(["1", "2"]))
                         new_code_str = "".join(new_code)
                     org.code = org.code[:random_index] + new_code_str + org.code[random_index + random_length -1:]
-                    print("new_code:", org.code)
+                    #print("new_code:", org.code)
                     return org.code
                 change_mutation(self)
 
