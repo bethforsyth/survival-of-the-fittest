@@ -15,7 +15,7 @@ class organism:
         self.start_posx = random.randint(0, 7)
         self.start_posy = random.randint(0, 7)
         self.current_pos = (self.start_posx, self.start_posy)
-        (environment.location(self.current_pos)).organism_list.append(self)
+        (environ.location(self.current_pos)).organisms_list.append(self)
 
 class orgs:
     def __init__(self):
@@ -38,7 +38,7 @@ class orgs:
                 org.health -= 1
 
                 # Create a baby! Obviously the baby is born with full health.
-                new_org = copy.deepcopy(org)
+                new_org = organism()
                 new_org.health = 10
                 new_orgs.append(new_org)
         self.organisms += new_orgs
@@ -71,7 +71,7 @@ class orgs:
                 environ.location(org.current_pos).plant_food -= 1
                 logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
             else:
-                org.health -= 1
+                org.health -= 4
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -89,5 +89,6 @@ for years in range(10):
     organisms.reproduce()
 
     environ.grow_plants()
-
+    environ.count_organisms(organisms)
+    logging.debug("we have {} organisms in position 5,5".format(environ.location((5, 5)).organism_number))
     logging.debug("we have {}".format(len(organisms.organisms)))

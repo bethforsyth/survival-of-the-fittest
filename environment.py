@@ -1,4 +1,6 @@
 import random
+import math
+
 
 
 class environment:
@@ -59,6 +61,11 @@ class environment:
         for location in locations:
             location.plants_grow()
 
+    def count_organisms(self, organisms):
+        locations = self.list_locations()
+        for location in locations:
+            location.organism_count(organisms)
+
 
 class location():
     """A location object to include position characteristics"""
@@ -76,18 +83,18 @@ class location():
 
     def randomise(self):
         self.temperature = random.randint(-20, 40)
-        self.plant_food = random.randint(0, 1000)
+        self.plant_food = random.randint(0, 30)
         self.meat_food = random.randint(0, 200)
-        self.humidity = random.random
-        self.light_level = random.random
+        self.humidity = random.random()
+        self.light_level = random.random()
 
     def plants_grow(self):
-        self.plant_food = (1 + self.light_level) * self.plant_food
+        self.plant_food = math.floor((1 + 0.25 * self.light_level) * self.plant_food)
 
     def meat_rots(self):
         self.meat_food -= (self.humidity * max(0, self.temperature) / 40) * self.meat_food
 
-    def organism_count(self):
+    def organism_count(self, organisms):
         self.organism_number = 0
         self.checked_location = (self.xpos, self.ypos)
         for creature in organisms.organisms:
