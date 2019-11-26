@@ -47,21 +47,16 @@ def draw_animals(animal_list, square_size, locx, locy):
     for animal in animal_list:
         x = int((animal_in_queue % 5) * square_size/5 + square_size/10 + locx)
         y = int(int(animal_in_queue / 5) * square_size/5 + square_size/10 + locy)
-        print("x = {} and y = {}".format(x, y))
         pygame.draw.circle(screen, ANIMAL_BROWN, (x,y), int(square_size/12))
         animal_in_queue += 1
 
 
 def draw_plant_food(food, square_size, locx, locy):
-    print("There is {} food".format(int(round(food))))
-    print("coords are {} and {}".format(locx, locy))
     food_in_queue = 1
-    print("food:", food)
     food_range = int(round(food))
     for food_item in range(food_range):
         x = int((food_in_queue % 5) * square_size/10 + square_size/20 + locx)
         y = int(int(food_in_queue / 5) * square_size/10 + square_size/20 + locy)
-        print("x = {} and y = {}".format(x, y))
         pygame.draw.circle(screen, FOOD_COLOR, (x,y), int(square_size/30))
         food_in_queue += 1
 
