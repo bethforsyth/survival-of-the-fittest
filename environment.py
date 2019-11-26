@@ -47,7 +47,6 @@ class environment:
     def location(self, pos):
         return self.grid[pos[0]][pos[1]]
 
-
 class location():
     """A location object to include position characteristics"""
     def __init__(self, xpos, ypos):
