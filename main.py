@@ -2,6 +2,7 @@ import logging
 import copy
 import random
 import math
+import time
 from base_genome import BASE_GENOME
 from environment import environment
 from game_map import draw_map
@@ -158,7 +159,6 @@ class orgs:
                 new_orgs.append(org)
             else:
                 number_of_deaths+=1
-                (environ.location(org.current_pos)).organisms_list.remove(org)
         logging.debug("{number_of_deaths} organisms died")
         self.organisms = new_orgs
 
@@ -183,19 +183,19 @@ class orgs:
 
     def move(self):
         for animale in self.organisms:
-            move_x=random.randint(- 1, 1)
-            move_y=random.randint(- 1, 1)
-            new_posx = animale.current_pos[0] + move_x
-            new_posy = animale.current_pos[1] + move_y
-            if new_posx > 0 and new_posx < 10 and new_posy > 0 and new_posy < 10:
-                current_pos = (new_posx, new_posy)
-                animale.current_pos = current_pos
-            (environ.location(animale.current_pos)).organisms_list_after_move.append(animale)
+            self.move_x=random.randint(-animale.traits.get("speed"), animale.traits.get("speed"))
+            self.move_y=random.randint(-animale.traits.get("speed"), animale.traits.get("speed"))
+            self.new_posx = animale.current_pos[0] + self.move_x
+            self.new_posy = animale.current_pos[1] + self.move_y
+            if self.new_posx > 0 and self.new_posx < 10 and self.new_posy > 0 and self.new_posy < 10:
+                self.current_pos = (self.new_posx, self.new_posy)
+            animale.current_pos=self.current_pos
+            (environ.location(self.current_pos)).organisms_list_after_move.append(self)
 
         for x in range(0, environ.size):
             for y in range(0, environ.size):
-                environ.location((x, y)).organisms_list = environ.location((x, y)).organisms_list_after_move
-                environ.location((x, y)).organisms_list_after_move=[]
+                environ.location(self.current_pos).organisms_list=environ.location(self.current_pos).organisms_list_after_move
+                environ.location(self.current_pos).organisms_list_after_move=[]
 
     def mutate(self):
         '''
@@ -320,11 +320,12 @@ class orgs:
         logging.debug("Eating")
         for org in self.organisms:
             food_consump = math.floor(org.traits.get("size")/4)
-            if environ.location(org.current_pos).traits["plant_food"] >= food_consump:
-                environ.location(org.current_pos).traits["plant_food"] -= food_consump
+            if environ.location(org.current_pos).plant_food >= food_consump:
+                environ.location(org.current_pos).plant_food -= food_consump
+                # logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
                 org.health += round(food_consump/2) + 1
             else:
-                org.health -= 10
+                org.health -= 4
 
     def environment_effect(self):
         for org in self.organisms:
@@ -356,7 +357,7 @@ for years in range(20):
     organisms.translation()
 
     environ.main(organisms)
-    organisms.eat()
+    # organisms.eat()
     organisms.death()
     organisms.reproduce()
     organisms.move()
@@ -368,3 +369,4 @@ for years in range(20):
     logging.debug("we have {}".format(len(organisms.organisms)))
 
     draw_map(environ, organisms)
+    time.sleep(1)
