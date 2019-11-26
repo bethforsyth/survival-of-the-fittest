@@ -21,8 +21,8 @@ class organism:
         in_gene = False
         for i in range(2, len(self.code)):
             if is_start_codon(self.code[i - 2], self.code[i - 1]) and not in_gene:
-                analyse_gene()
                 start_pos = i - 2
+                in_gene = True
             elif is_end_codon(self.code[i - 2], self.code[i - 1]) and in_gene:
                 end_pos = i
                 in_gene = False
