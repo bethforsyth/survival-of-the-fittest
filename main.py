@@ -17,8 +17,9 @@ class gene_struct:
 environ = environment()
 
 ## These must not overlap!
-traits = {"032": "strength", "123": "size", "456": "metabolism", "503": "speed", "666": "greediness", "689": "intelligence"}
-stimuli = {"043": "temperature", "375": "food"}
+## should correspond to organism
+traits = {"032": "strength", "122": "size", "452": "metabolism", "502": "speed", "662": "greediness", "682": "intelligence"}
+
 
 class organism:
     def __init__(self):
@@ -42,7 +43,7 @@ class organism:
         for i in range(2, len(self.code)):
             if is_start_codon(self.code[i - 2], self.code[i - 1]) and not in_gene:
                 start_pos = i - 2
-                in_gene = True
+                in_gene = Truel
             elif is_end_codon(self.code[i - 2], self.code[i - 1]) and in_gene:
                 end_pos = i
                 in_gene = False
@@ -77,7 +78,8 @@ class organism:
             if is_sensory(gene.index):
                 for other_gene in self.gene_traits:
                     if binds(gene.binding, other_gene.binding) and not is_sensory(other_gene.index):
-                        stimulus = environment.get_stimulus(gene.index)
+                        loc = environment(location(self.current_pos))
+                        stimulus = get_stimulus(gene.index)
                         new_quantifier = apply_operator(gene.operator, stimulus*gene.quantifier, other_gene.quantifiers)
                         other_gene.quantifier = new_quantifier
 
@@ -93,7 +95,6 @@ class organism:
         for gene in self.gene_traits:
             if is_trait(gene.index):
                 self.apply_operator_to_trait(gene.index, gene.operator, gene.quantifier, gene.index)
-
 
 
 # This should give us the start of a gene approximately 1/100 codons.
@@ -213,52 +214,13 @@ class orgs:
 
     def translation(self):
         # Turn the genetic code into characteristics.
+        logging.debug("Translating!")
         for org in self.organisms:
             org.get_genes()
             org.genes_to_traits()
-            org.apply_sensory(environment)
+            org.apply_sensory(environ)
             org.apply_regulatory()
             org.apply_trait()
-
-class environment:
-    def __init__(self):
-        self.food = 30
-
-    def position(self, location_id=1, x=0, y=0, temperature=0):
-        global location
-        location=[location_id, x, y, temperature]
-        counter1=0
-        counter2=0
-        counter3=0
-        while counter2<21:
-            environment.append(position(counter3, counter1, counter2).location)
-            counter1+=1
-            counter3+=1
-
-            if counter1>20:
-                counter1-=20
-                counter2+=1
-
-    def main(self, organisms):
-        # Anything in environment that needs to change (e.g. plants grow)
-
-        # Environment acts on organisms
-
-        return
-
-    def live(self, organisms):
-        for num in range(len(organisms.organisms)):
-            organism = organisms.organisms[num]
-            organism.health += self.food
-            self.food -= 1
-
-    # def count_organisms_at_pos:
-    #     self.posx = 0
-    #     self.posy = 0
-    #     self.cur_check = position[self.posx][self.posy]
-    #     if :
-
-
 
 # month = 1
 # if month > 12:
