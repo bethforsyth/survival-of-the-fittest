@@ -1,6 +1,10 @@
 import logging
 import copy
 import random
+from environment import environment
+
+environ = environment()
+
 
 class organism:
     def __init__(self):
@@ -8,9 +12,9 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
-        # self.start_posx = random.randint(5,15)
-        # self.start_posy = random.randint(5,15)
-        # self.current_pos = environment.location[self.start_posx][self.start_posy]
+        self.start_posx = 1  #random.randint(0, 7)
+        self.start_posy = 1  #random.randint(0, 7)
+        self.current_pos = (self.start_posx, self.start_posy)
 
 
 class orgs:
@@ -18,13 +22,13 @@ class orgs:
         self.organisms = [organism() for i in range(1)]
 
     def death(self):
-        list_index = 0
+        new_orgs = []
         for org in self.organisms:
-            if org.health <= 0:
-                logging.debug("Dying")
-                del self.organisms[list_index]
+            if org.health > 0:
+                new_orgs.append(org)
             else:
-                list_index += 1
+                logging.debug("An organism dies")
+        self.organisms = new_orgs
 
     def reproduce(self):
         new_orgs = []
@@ -77,6 +81,7 @@ class orgs:
             elif random.randint(1, 4) == 3:
                 #add
                 logging.debug("addition mutation")
+
             else:
                 #change
                 logging.debug("change mutation")
@@ -130,11 +135,21 @@ class environment:
 #     month-=12
 # temperature = 20-((month-6)^2)/4
 
+    def eat(self):
+        '''Loop through organisms and get them to eat if there is food'''
+        # always eat plants
+        logging.debug("Eating")
+        for org in self.organisms:
+            if environ.location(org.current_pos).plant_food > 0:
+                environ.location(org.current_pos).plant_food -= 1
+                logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
+            else:
+                org.health -= 1
+
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
 
-environ = environment()
 organisms = orgs()
 for years in range(10):
     logging.debug("loop number {}!".format(years))
@@ -142,7 +157,7 @@ for years in range(10):
     organisms.translation()
 
     environ.main(organisms)
-
+    # organisms.eat()
     organisms.death()
     organisms.reproduce()
 
