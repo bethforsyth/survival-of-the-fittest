@@ -68,6 +68,9 @@ class orgs:
                 logging.debug("delete mutation")
 
                 def mutate_deletion(self):
+                    '''
+                    Randomly delete one of the digits from the organism's code.
+                    '''
                     code_as_list = []
                     for digit in org.code:
                         code_as_list.append(digit)
@@ -79,6 +82,20 @@ class orgs:
             elif random.randint(1, 4) == 3:
                 #add
                 logging.debug("addition mutation")
+
+                def addition_mutation(self):
+                    '''
+                    Add a 1 or a 0 to a random place in the organism's code.
+                    '''
+
+                    code_as_list = list(org.code)
+                    code_as_list.insert(random.randint(0, len(org.code)), random.choice(["1","0"]))
+                    new_code = ''.join(code_as_list)
+                    print("original code: " + org.code + " mutated code:" + new_code)
+
+                addition_mutation(self)
+
+
             else:
                 #change
                 logging.debug("change mutation")
