@@ -47,6 +47,19 @@ class environment:
     def location(self, pos):
         return self.grid[pos[0]][pos[1]]
 
+    def list_locations(self):
+        locations = []
+        for row in self.grid:
+            for location in row:
+                locations.append(location)
+        return locations
+
+    def grow_plants(self):
+        locations = self.list_locations()
+        for location in locations:
+            location.plants_grow()
+
+
 class location():
     """A location object to include position characteristics"""
     def __init__(self, xpos, ypos):
@@ -76,7 +89,9 @@ class location():
 
     def organism_count(self):
         self.organism_number = 0
-        self.checked_location = environment.location[self.xpos][self.ypos]
-        for creature in org.organisms:
+        self.checked_location = (self.xpos, self.ypos)
+        for creature in organisms.organisms:
             if creature.current_pos == self.checked_location:
                 self.organism_number += 1
+            else:
+                pass

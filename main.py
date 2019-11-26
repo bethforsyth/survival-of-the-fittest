@@ -12,8 +12,8 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
-        self.start_posx = 1  #random.randint(0, 7)
-        self.start_posy = 1  #random.randint(0, 7)
+        self.start_posx = random.randint(0, 7)
+        self.start_posy = random.randint(0, 7)
         self.current_pos = (self.start_posx, self.start_posy)
         (environment.location(self.current_pos)).organism_list.append(self)
 
@@ -87,5 +87,7 @@ for years in range(10):
     organisms.eat()
     organisms.death()
     organisms.reproduce()
+
+    environ.grow_plants()
 
     logging.debug("we have {}".format(len(organisms.organisms)))
