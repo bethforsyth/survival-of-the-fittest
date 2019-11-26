@@ -1,6 +1,7 @@
 import logging
 import copy
 import random
+import math
 from environment import environment
 from game_map import draw_map
 
@@ -13,10 +14,10 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
-        self.start_posx = 1  #random.randint(0, 7)
-        self.start_posy = 1  #random.randint(0, 7)
-        self.current_pos = (self.start_posx, self.start_posy)
-
+        self.start_posx = random.randint(0, 7)
+        self.start_posy = random.randint(0, 7)
+        self.current_pos = [self.start_posx, self.start_posy]
+        (environ.location(self.current_pos)).organisms_list.append(self)
 
 class orgs:
     def __init__(self):
@@ -24,11 +25,13 @@ class orgs:
 
     def death(self):
         new_orgs = []
+        number_of_deaths=0
         for org in self.organisms:
             if org.health > 0:
                 new_orgs.append(org)
             else:
-                logging.debug("An organism dies")
+                number_of_deaths+=1
+        logging.debug(f"{number_of_deaths} organisms died")
         self.organisms = new_orgs
 
     def reproduce(self):
@@ -36,13 +39,28 @@ class orgs:
         for org in self.organisms:
             if org.health > 6:
                 # Giving birth costs health.
-                org.health -= 1
+                org.health -= 2
 
                 # Create a baby! Obviously the baby is born with full health.
-                new_org = copy.deepcopy(org)
+                new_org = organism()
+                new_org.start_posx = org.start_posx
+                new_org.start_posy = org.start_posy
                 new_org.health = 10
                 new_orgs.append(new_org)
         self.organisms += new_orgs
+
+    def move(self):
+        for org in self.organisms:
+            self.move_x+=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            self.move_y+=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            if self.move_x > 0 and self.move_x < environ.size and self.move_y > 0 and self.move_y < environ.size
+            self.current_pos = [self.move_x, self.move_y]
+            (environ.location(self.current_pos)).organisms_list_after_move.append(self)
+
+        for x in environ.size:
+            for y in environ.size:
+                environ.location.organisms_list=environ.location.organisms_list_after_move
+                environ.location.organisms_list_after_move=[]
 
     def mutate(self):
         '''
@@ -68,12 +86,22 @@ class orgs:
         # always eat plants
         logging.debug("Eating")
         for org in self.organisms:
-            if environ.location(org.current_pos).plant_food > 0:
-                environ.location(org.current_pos).plant_food -= 1
+            food_consump = math.floor(org.traits.get("size")/4)
+            if environ.location(org.current_pos).plant_food >= food_consump:
+                environ.location(org.current_pos).plant_food -= food_consump
                 logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
+                org.health += round(food_consump/2) + 1
             else:
-                org.health -= 1
+                org.health -= 4
 
+    def environment_effect(self):
+        for org in self.organisms:
+            self.temperature_range_min = self.size*(-2)
+            self.temperature_range_max = 45 - self.size * 2
+            if environ.location(org.current_pos).temperature < self.temperature_range_min:
+                org.health -= math.round(self.temperature_range_min-environ.location(org.current_pos).temperature)
+            elif environ.location(org.current_pos).temperature < self.temperature_range_max:
+                org.health -= math.round(self.temperature_range_max-environ.location(org.current_pos).temperature)
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
@@ -89,7 +117,9 @@ for years in range(10):
     organisms.death()
     organisms.reproduce()
 
-
+    environ.grow_plants()
+    environ.count_organisms(organisms)
+    logging.debug("we have {} organisms in position 5,5".format(environ.location((5, 5)).organism_number))
     logging.debug("we have {}".format(len(organisms.organisms)))
 
     draw_map(environ, organisms)

@@ -22,5 +22,6 @@ environment
 temperature
 herbivore food
 carnivore food - dead animals
-obstacles
-Fighting ability -- size, aggression
+light level
+terrain (obstacles)
+
