@@ -4,8 +4,8 @@ import random
 
 class organism:
     def __init__(self):
-        self.code = []
-        self.size = 10
+        self.code = "0001011010101"
+        self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
         self.start_posx = random.randint(5,15)
@@ -30,7 +30,6 @@ class orgs:
         new_orgs = []
         for org in self.organisms:
             if org.health > 6:
-                logging.debug("Reproducing")
                 # Giving birth costs health.
                 org.health -= 1
 
@@ -41,12 +40,23 @@ class orgs:
         self.organisms += new_orgs
 
     def mutate(self):
-        return
+        '''
+        Randomly select a trait and randomly increment or decrement the size
+        trait by 1. Randomly. '''
+        #for each organism (some percentage get the murtation applied)
+
+        for org in self.organisms:
+            logging.debug("Mutating")
+            random_trait = random.choice(list(org.traits))
+            print(random_trait)
+            if random.choice([1, 2]) == 1:
+                org.traits[random_trait] += 1
+            else:
+                org.traits[random_trait] -= 1
 
     def translation(self):
         # Turn the genetic code into characteristics.
         return
-
 
 class environment:
     def __init__(self):
@@ -101,6 +111,7 @@ for years in range(10):
 
     organisms.death()
     organisms.reproduce()
+
     logging.debug("we have {}".format(len(organisms.organisms)))
 <<<<<<< HEAD
 
