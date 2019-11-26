@@ -1,46 +1,71 @@
-envir = []
+import random
+
+
 class environment:
-    def __init__(self, location_id, x, y, temperature=0):
-        self.location=[location_id, x, y, temperature]
+    """The environment objects"""
+    def grid_create(self):
+        grid = []
+        x = 0
+        y = 0
+        xrow = []
+        while x < self.size:
+            xrow.append(location(x, y))
+            y += 1
+            if y >= self.size:
+                y = 0
+                x += 1
+                grid.append(xrow)
+                xrow = []
+        return grid
 
-    def position(self, location_id=1, x=0, y=0, temperature=0):
-        self.location=[location_id, x, y, temperature]
-        counter1=0
-        counter2=0
-        counter3=0
-        while counter2<21:
-            global envir
-            envir.append(self.position(counter3, counter1, counter2).location)
-            counter1+=1
-            counter3+=1
+    def __init__(self):
+        self.size = 10
+        self.grid = self.grid_create()
+        self.standard_environment()
 
-            if counter1>20:
-                counter1-=20
-                counter2+=1
+    def main(self, organisms):
+        # Anything in environment that needs to change (e.g. plants grow)
+
+        # Environment acts on organisms
+        return
+
+    def live(self, organisms):
+        for num in range(len(organisms.organisms)):
+            organism = organisms.organisms[num]
+            organism.health += self.food
+            self.food -= 1
+
+    def standard_environment(self):
+        for i in range(self.size):
+            humidity = i / self.size
+            for j in range(self.size):
+                temperature = -20 + 60 * j / self.size
+                self.grid[i][j].humidity = humidity
+                self.grid[i][j].temperature = temperature
 
 
-# class position:
-#     def __init__(self, location_id, x, y, temperature=0):
-#         self.location=[location_id, x, y, temperature]
+class location():
+    """A location object to include position characteristics"""
+    def __init__(self, xpos, ypos):
+        self.xpos = xpos
+        self.ypos = ypos
+        self.temperature = 0  # between -20 and 40
+        self.plant_food = 0  # units of food for herbivores
+        self.meat_food = 0  # units of food for carnivores
+        self.terrain = 'grass'  # terrain type (from a list somewhere)
+        self.humidity = 0  # water content (between 0 and 1)
+        self.light_level = 0  # how bright a place is (between 0 and 1)
 
-month = 1
-if month > 12:
-    month-=12
+    def randomise(self):
+        self.temperature = random.randint(-20, 40)
+        self.plant_food = random.randint(0, 1000)
+        self.meat_food = random.randint(0, 200)
+        self.humidity = random.random
+        self.light_level = random.random
 
-temperature = 20-((month-6)^2)/4
+    def plants_grow(self):
+        self.plant_food = (1 + self.light_level) * self.plant_food
 
-counter1=0
-counter2=0
-counter3=0
+    def meat_rots(self):
+        self.meat_food -= (self.humidity * max(0, self.temperature) / 40) * self.meat_food
 
-environment.position
-# while counter2<21:
-#     environment.append(position(counter3, counter1, counter2).location)
-#     counter1+=1
-#     counter3+=1
-
-#     if counter1>20:
-#         counter1-=20
-#         counter2+=1
-
-print(envir)
