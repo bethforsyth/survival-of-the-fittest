@@ -102,8 +102,8 @@ class location():
         self.traits["temperature"] = random.randint(-20, 40)
         self.traits["plant_food"] = random.randint(0, 1000)
         self.traits["meat_food"] = random.randint(0, 200)
-        self.traits["humidity"] = random.random
-        self.traits["light_level"] = random.random
+        self.traits["humidity"] = random.random()
+        self.traits["light_level"] = random.random()
 
     def plants_grow(self):
         self.traits["plant_food"] = (1 + self.traits["light_level"]) * self.traits["plant_food"]

@@ -329,7 +329,7 @@ class orgs:
             elif environ.location(org.current_pos).temperature < self.temperature_range_max:
                 org.health -= math.round(self.temperature_range_max-environ.location(org.current_pos).temperature)
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
 
 organisms = orgs()
