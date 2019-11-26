@@ -1,6 +1,7 @@
 import logging
 import copy
 import random
+from base_genome import BASE_GENOME
 
 ## Traits are not particular to a specific organism, and must interact
 ## with the environment as well as the organism, so we'll define them  in a
@@ -14,8 +15,8 @@ class gene_traits:
 
 class organism:
     def __init__(self):
-        self.code = []
-        for j in range(1000):
+        self.code = BASE_GENOME
+        for j in range(800):
             self.code.append(random.randint(0, 9))
         logging.debug("Code is {}".format(self.code))
         self.size = 10
@@ -42,7 +43,7 @@ class organism:
         return self.genes
 
     def genes_to_traits(self):
-        gene_behaviours = []
+        gene_traits = []
 
         for gene in self.genes:
             my_gene = gene_traits()
@@ -58,8 +59,18 @@ class organism:
             my_gene.binding = int("".join(map(str, gene[9:12]))) 
             my_gene.quantifier = int("".join(map(str, gene[12:]))) 
 
+            gene_traits.append(my_gene)
 
-            gene_behaviours.append(my_gene)
+        self.gene_traits = gene_traits
+
+    def apply_sensory(self, environment):
+        for gene in self.gene_traits:
+            if is_sensory(gene.index):
+                for other_gene in self.gene_traits:
+                    if !is_sensory(other_gene.index) and binds(gene.binding, other_gene.binding):
+                        new_quantifier = apply_operator(gene.operator, gene.quantifier, other_gene.quantifiers)
+                        other_gene.quantifier = new_quantifier
+
 
 
 
@@ -68,8 +79,7 @@ def is_start_codon(codon):
     if codon[0] == 0 and codon[1] == 1:
         return True
     else:
-        return False
-
+        return Falsel
 
 # This should give us the end of a gene approximately 1/100 codons.
 def is_end_codon(codon):
@@ -78,6 +88,26 @@ def is_end_codon(codon):
     else:
         return False
 
+def is_sensory(codon):
+
+def binds(codon1, codon2):
+    if codon1 == codon2:
+        return True
+    else:
+        return False
+
+def apply_operator(operator, quantifier, target):
+    ## We're going to make 
+    if operator < 250:
+        return target + quantifier
+
+    elif operator >= 205 and operator < 500 :
+        return target - quantifier
+
+    elif operator >=500 and operator < 750 :
+        return target * (quantifier / 100)
+    else :
+        return target / (quantifier / 100)
 
 class orgs:
     def __init__(self):
@@ -110,10 +140,12 @@ class orgs:
     def mutate(self):
         return
 
-    def translation(self):
+    def translation(self, environment):
         for org in self.organisms:
             org.get_genes()
-            org.genes_to_traits()
+            gene_traits = org.genes_to_traits()
+            org.apply_sensory(gene_traits, environment)
+            org.apply_regulatory(gene_traits, environment)
 
 
 class environment:
@@ -143,7 +175,7 @@ organisms = orgs()
 for years in range(10):
     logging.debug("loop number {}!".format(years))
     organisms.mutate()
-    organisms.translation()
+    organisms.translation(environ)
 
     environ.main(organisms)
 
