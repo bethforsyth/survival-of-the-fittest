@@ -49,6 +49,7 @@ class environment:
         return self.grid[pos[0]][pos[1]]
 
 
+
 class location():
     """A location object to include position characteristics"""
     def __init__(self, xpos, ypos):
@@ -67,6 +68,7 @@ class location():
         self.meat_food = random.randint(0, 200)
         self.humidity = random.random
         self.light_level = random.random
+        self.terrain = random.choice(['grass','sand'])
 
     def plants_grow(self):
         self.plant_food = (1 + self.light_level) * self.plant_food
@@ -74,3 +76,8 @@ class location():
     def meat_rots(self):
         self.meat_food -= (self.humidity * max(0, self.temperature) / 40) * self.meat_food
 
+    def set_terrain(self):
+        if self.temperature > 30:
+            self.terrain = 'sand'
+        elif self.temperature < -10:
+            self.terrain = 'snow'
