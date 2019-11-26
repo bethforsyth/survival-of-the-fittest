@@ -15,9 +15,8 @@ class organism:
         self.dead = False
         self.start_posx = random.randint(0, 7)
         self.start_posy = random.randint(0, 7)
-        self.current_pos = [self.start_posx, self.start_posy]
-        (environ.location(self.current_pos)).organisms_list.append(self)
-
+        self.current_pos = (self.start_posx, self.start_posy)
+        (environ.location(self.current_pos)).organisms_list.append(self)  
 class orgs:
     def __init__(self):
         self.organisms = [organism() for i in range(1)]
@@ -42,26 +41,27 @@ class orgs:
 
                 # Create a baby! Obviously the baby is born with full health.
                 new_org = organism()
-                new_org.start_posx = random.randint(0, 7)
-                new_org.start_posy = random.randint(0, 7)
+                new_org.start_posx = org.current_pos[0]
+                new_org.start_posy = org.current_pos[1]
                 new_org.health = 10
                 new_orgs.append(new_org)
         self.organisms += new_orgs
 
-    # def move(self):
-    #     for org in self.organisms:
-    #         self.move_x=random.randint(-org.traits.get("speed")+1, org.traits.get("speed")+1)
-    #         self.move_y=random.randint(-org.traits.get("speed")+1, org.traits.get("speed")+1)
-    #         self.new_posx = org.current_pos[0] + self.move_x
-    #         self.new_posy = org.current_pos[1] + self.move_y
-    #         if self.new_posx > 0 and self.new_posx < environ.size and self.new_posy > 0 and self.new_posy < environ.size:
-    #             self.current_pos = (self.new_posx, self.new_posy)
-    #         (environ.location(self.current_pos)).organisms_list_after_move.append(self)
+    def move(self):
+        for animale in self.organisms:
+            self.move_x=random.randint(-animale.traits.get("speed"), animale.traits.get("speed"))
+            self.move_y=random.randint(-animale.traits.get("speed"), animale.traits.get("speed"))
+            self.new_posx = animale.current_pos[0] + self.move_x
+            self.new_posy = animale.current_pos[1] + self.move_y
+            if self.new_posx > 0 and self.new_posx < 10 and self.new_posy > 0 and self.new_posy < 10:
+                self.current_pos = (self.new_posx, self.new_posy)
+                animale.current_pos=self.current_pos
+            (environ.location(self.current_pos)).organisms_list_after_move.append(self)
 
-    #     for x in range(0, environ.size):
-    #         for y in range(0, environ.size):
-    #             environ.location(self.current_pos).organisms_list=environ.location(self.current_pos).organisms_list_after_move
-    #             environ.location(self.current_pos).organisms_list_after_move=[]
+        for x in range(0, environ.size):
+            for y in range(0, environ.size):
+                environ.location(self.current_pos).organisms_list=environ.location(self.current_pos).organisms_list_after_move
+                environ.location(self.current_pos).organisms_list_after_move=[]
 
     def mutate(self):
         '''
@@ -76,7 +76,7 @@ class orgs:
             if random.choice([1, 2]) == 1:
                 org.traits[random_trait] += 1
             else:
-                org.traits[random_trait] -= 1
+                org.traits[random_trait] = max(1, org.traits[random_trait]-1)
 
     def translation(self):
         # Turn the genetic code into characteristics.
@@ -108,6 +108,9 @@ logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
 
 organisms = orgs()
+
+watched_creature = (environ.location(organisms.organisms[0].current_pos)).organisms_list[0]
+
 for years in range(10):
     logging.debug("loop number {}!".format(years))
     organisms.mutate()
@@ -117,9 +120,10 @@ for years in range(10):
     organisms.eat()
     organisms.death()
     organisms.reproduce()
-    # organisms.move()
+    organisms.move()
 
     environ.grow_plants()
     environ.count_organisms(organisms)
     logging.debug("we have {} organisms in position 2,2".format(environ.location((2, 2)).organism_number))
     logging.debug("we have {}".format(len(organisms.organisms)))
+    logging.debug(f"Position of watched animal is {watched_creature.current_pos}")
