@@ -4,14 +4,14 @@ import random
 
 class organism:
     def __init__(self):
-        self.code = "0001011010101"
+        self.code = "000101101101111"
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         # self.size = 10
         self.health = 5
         self.dead = False
         # self.start_posx = random.randint(5,15)
         # self.start_posy = random.randint(5,15)
-        # self.current_pos = environment.location[self.start_posx][self.start_posy]
+        # self.current_pos = environ.location[self.start_posx][self.start_posy]
 
 
 class orgs:
@@ -63,7 +63,16 @@ class orgs:
         # choose which mutation
             if random.randint(1, 4) == 1:
                 #duplication
-                logging.debug("duplication mutation")
+                def duplicate(self):
+                    logging.debug("Duplicating DNA")
+                    random_dup_start_index = random.randint(0,len(org.code)-1)
+                    length_of_copy = min(3, len(org.code)-1-random_dup_start_index) #randomise length of duplicate?
+                    org.code = (org.code[:random_dup_start_index+length_of_copy] +
+                    org.code[random_dup_start_index:random_dup_start_index+length_of_copy] +
+                    org.code[random_dup_start_index+length_of_copy:])
+                    #print("New code: ", org.code, "(change at index %d of length %d)"%(random_dup_start_index, length_of_copy))
+                duplicate(self)
+
             elif random.randint(1, 4) == 2:
                 logging.debug("delete mutation")
 
@@ -81,6 +90,7 @@ class orgs:
             else:
                 #change
                 logging.debug("change mutation")
+
 
     def translation(self):
         # Turn the genetic code into characteristics.
