@@ -63,15 +63,18 @@ class orgs:
         # choose which mutation
             if random.randint(1, 4) == 1:
                 #duplication
-                def duplicate(self):
+                def mutate_duplicate(self):
                     logging.debug("Duplicating DNA")
-                    random_dup_start_index = random.randint(0,len(org.code)-1)
-                    length_of_copy = min(3, len(org.code)-1-random_dup_start_index) #randomise length of duplicate?
-                    org.code = (org.code[:random_dup_start_index+length_of_copy] +
-                    org.code[random_dup_start_index:random_dup_start_index+length_of_copy] +
-                    org.code[random_dup_start_index+length_of_copy:])
-                    #print("New code: ", org.code, "(change at index %d of length %d)"%(random_dup_start_index, length_of_copy))
-                duplicate(self)
+                    random_dup_index1 = random.randint(0,len(org.code)-1)
+                    random_dup_index2 = random.randint(0,len(org.code)-1)
+                    start_index = min(random_dup_index1, random_dup_index2)
+                    end_index = max(random_dup_index1, random_dup_index2)
+                    #length_of_copy = end_index-start_index
+                    mutated_code = (org.code[:start_index] +
+                        org.code[start_index:end_index]*2 + org.code[end_index:])
+                    print("Old code: ", org.code, "\nNew code: ", mutated_code, "(Duplicated from %d to %d)"%(start_index, end_index))
+                    return(mutated_code)
+                mutate_duplicate(self)
 
             elif random.randint(1, 4) == 2:
                 logging.debug("delete mutation")
