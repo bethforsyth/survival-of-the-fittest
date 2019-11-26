@@ -8,7 +8,7 @@ environ = environment()
 
 class organism:
     def __init__(self):
-        self.code = "000101101101111"
+        self.code = "01234567890123"
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         # self.size = 10
         self.health = 5
@@ -52,23 +52,12 @@ class orgs:
 
         for org in self.organisms:
             logging.debug("Mutating")
-
-        #Randomly select a trait and randomly increment or decrement the size
-        #trait by 1.
-
-            # random_trait = random.choice(list(org.traits))
-            # print(random_trait)
-            # if random.choice([1, 2]) == 1:
-            #     org.traits[random_trait] += 1
-            # else:
-            #     org.traits[random_trait] -= 1
-
-        #different versions of mutating genetic code
-        # choose which mutation
             if random.randint(1, 4) == 1:
-                #duplication
+                logging.debug("Duplicating DNA")
+###############################################################################
+#           Duplication mutation                                              #
+###############################################################################
                 def mutate_duplicate(self):
-                    logging.debug("Duplicating DNA")
                     random_dup_index1 = random.randint(0,len(org.code)-1)
                     random_dup_index2 = random.randint(0,len(org.code)-1)
                     start_index = min(random_dup_index1, random_dup_index2)
@@ -82,7 +71,9 @@ class orgs:
 
             elif random.randint(1, 4) == 2:
                 logging.debug("delete mutation")
-
+###############################################################################
+#           Deletion mutation                                                 #
+###############################################################################
                 def mutate_deletion(self):
                     '''
                     Randomly delete one of the digits from the organism's code.
@@ -97,13 +88,15 @@ class orgs:
 
             elif random.randint(1, 4) == 3:
                 logging.debug("addition mutation")
-
+###############################################################################
+#           Addition mutation                                                 #
+###############################################################################
                 def addition_mutation(self):
                     '''
-                    Add a 1 or a 0 to a random place in the organism's code.
+                    Add a new digit to a random place in the organism's code.
                     '''
                     code_as_list = list(org.code)
-                    code_as_list.insert(random.randint(0, len(org.code)), random.choice(["1","0"]))
+                    code_as_list.insert(random.randint(0, len(org.code)), str(random.randint(0,9)))
                     new_code = ''.join(code_as_list)
                     print("original code: " + org.code + " mutated code:" + new_code)
                     return new_code
@@ -112,7 +105,9 @@ class orgs:
 
             else:
                 logging.debug("change mutation")
-
+###############################################################################
+#           Change mutation                                                   #
+###############################################################################
                 def change_mutation(self):
                     '''
                     Change a random slice of the organism's code to a random
@@ -125,7 +120,7 @@ class orgs:
                     new_code = []
                     new_code_str = ""
                     for i in range(random_length):
-                        new_code.append(random.choice(["1", "0"]))
+                        new_code.append(str(random.randint(0,9)))
                         new_code_str = "".join(new_code)
                     org.code = org.code[:random_index] + new_code_str + org.code[random_index + (random_length -1):]
                     print("new_code:", org.code)
