@@ -88,8 +88,4 @@ for years in range(10):
     organisms.death()
     organisms.reproduce()
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 28414c19cd0745375c5da195fd26f6af8df51e22
     logging.debug("we have {}".format(len(organisms.organisms)))
