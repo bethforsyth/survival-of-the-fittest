@@ -107,14 +107,14 @@ class orgs:
 
 
             else:
-                #change
                 logging.debug("change mutation")
                 def change_mutation(self):
-                    #random pick a length
+                    '''
+                    Change a random slice of the organism's code to a random
+                    string of 1s and 0s.
+                    '''
                     random_length = random.randint(0, len(org.code))
-                    #random pick a location
                     random_index = random.randint(0, len(org.code)-1)
-                    #change the string
                     print("original code:", org.code)
                     print("changing " + str(random_length) + " nucleotides at index " + str(random_index))
                     new_code = []
