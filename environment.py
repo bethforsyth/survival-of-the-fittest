@@ -71,14 +71,26 @@ class environment:
         for location in self.list_locations():
             location.set_terrain()
 
+## should correspond to environment
+stimuli = {"011": "temperature",
+            "021": "plant_food",
+            "031": "meat_food",
+            "041": "humidity",
+            "051": "light_level"}
+
+
 class location():
     """A location object to include position characteristics"""
     def __init__(self, xpos, ypos):
         self.xpos = xpos
         self.ypos = ypos
-        self.temperature = 0  # between -20 and 40
-        self.plant_food = 0  # units of food for herbivores
-        self.meat_food = 0  # units of food for carnivores
+        self.traits = {
+            "temperature": 0,
+            "plant_food": 0,
+            "meat_food": 0,
+            "humidity": 0,
+            "light_level": 0
+        }
         self.terrain = 'grass'  # terrain type (from a list somewhere)
         self.humidity = 0  # water content (between 0 and 1)
         self.light_level = 0  # how bright a place is (between 0 and 1)
@@ -87,18 +99,22 @@ class location():
         self.organisms_list_after_move = []
 
     def randomise(self):
-        self.temperature = random.randint(-20, 40)
-        self.plant_food = random.randint(0, 30)
-        self.meat_food = random.randint(0, 200)
-        self.humidity = random.random()
-        self.light_level = random.random()
-        self.terrain = random.choice(['grass','sand'])
+        self.traits["temperature"] = random.randint(-20, 40)
+        self.traits["plant_food"] = random.randint(0, 1000)
+        self.traits["meat_food"] = random.randint(0, 200)
+        self.traits["humidity"] = random.random
+        self.traits["light_level"] = random.random
 
     def plants_grow(self):
-        self.plant_food = math.floor((1 + 0.25 * self.light_level) * self.plant_food)
+        self.traits["plant_food"] = (1 + self.traits["light_level"]) * self.traits["plant_food"]
+
 
     def meat_rots(self):
-        self.meat_food -= (self.humidity * max(0, self.temperature) / 40) * self.meat_food
+        self.traits["meat_food"] -= (self.traits["humidity"] * max(0, self.traits["temperature"]) / 40) * self.traits["meat_food"]
+
+    def get_stimulus(self, index):
+        stimulus_name = stimuli[index]
+        return self.traits[stimulus_name]
 
     def organism_count(self, organisms):
         self.organism_number = 0
