@@ -13,8 +13,8 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
-        self.start_posx = random.randint(0, 7)
-        self.start_posy = random.randint(0, 7)
+        self.start_posx = random.randint(0, 9)
+        self.start_posy = random.randint(0, 9)
         self.current_pos = (self.start_posx, self.start_posy)
         (environ.location(self.current_pos)).organisms_list.append(self)  
 class orgs:
