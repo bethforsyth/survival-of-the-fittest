@@ -58,6 +58,8 @@ class location():
         self.terrain = 'grass'  # terrain type (from a list somewhere)
         self.humidity = 0  # water content (between 0 and 1)
         self.light_level = 0  # how bright a place is (between 0 and 1)
+        self.organism_number = 0
+        self.organisms_ids = []
 
     def randomise(self):
         self.temperature = random.randint(-20, 40)
@@ -71,3 +73,11 @@ class location():
 
     def meat_rots(self):
         self.meat_food -= (self.humidity * max(0, self.temperature) / 40) * self.meat_food
+
+    def organism_count(self):
+        self.organism_number = 0
+        self.checked_location = environment.location[self.xpos][self.ypos]
+        for creature in org.organisms:
+            if creature.current_pos == self.checked_location:
+                self.organism_number += 1
+                self.organism_ids = (environment.location(self.checked_location)).organisms.append(self)
