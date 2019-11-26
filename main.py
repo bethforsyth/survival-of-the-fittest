@@ -2,6 +2,15 @@ import logging
 import copy
 import random
 
+## Traits are not particular to a specific organism, and must interact
+## with the environment as well as the organism, so we'll define them  in a
+
+class gene_traits:
+    def __init__(self):
+        self.index = 0
+        self.operator = 0
+        self.binding = 0
+        self.quantifier = 0
 
 class organism:
     def __init__(self):
@@ -31,6 +40,27 @@ class organism:
                 in_gene = False
                 self.genes.append(self.code[start_pos:end_pos])
         return self.genes
+
+    def genes_to_traits(self):
+        gene_behaviours = []
+
+        for gene in self.genes:
+            my_gene = gene_traits()
+            ## Genes are structures where
+            ## pos 0-2 is the start codon
+            ## pos 3-5 is the gene index (which tells us whether this
+            ## is a trait, sensory, or regulatory)
+            ## pos 6-8 is the operator
+            ## pos 9-11 is binding site
+            ## the rest to the end is the quantifier
+            my_gene.index = int("".join(map(str, gene[3:6]))) 
+            my_gene.operator = int("".join(map(str, gene[6:9]))) 
+            my_gene.binding = int("".join(map(str, gene[9:12]))) 
+            my_gene.quantifier = int("".join(map(str, gene[12:]))) 
+
+
+            gene_behaviours.append(my_gene)
+
 
 
 # This should give us the start of a gene approximately 1/100 codons.
@@ -83,6 +113,7 @@ class orgs:
     def translation(self):
         for org in self.organisms:
             org.get_genes()
+            org.genes_to_traits()
 
 
 class environment:
