@@ -26,7 +26,7 @@ class organism:
         for j in range(800):
             self.code.append(random.randint(0, 9))
         logging.debug("Code is {}".format(self.code))
-        self.code = "001234567890123""
+        self.code = "001234567890123"
         self.traits = {"size": 10, "strength": 6, "metabolism": 6, "speed": 2, "greediness": 8, "intelligence": 10}
         self.health = 10
         self.dead = False
