@@ -129,7 +129,7 @@ class location():
             self.terrain = 'sand'
         elif self.temperature < -10:
             self.terrain = 'snow'
-<<<<<<< HEAD
+
 
     def set_plant_food(self):
         if self.terrain == 'grass':
@@ -138,5 +138,3 @@ class location():
             self.traits["plant_food"] = random.randint(10, 15)
         elif self.terrain == 'sand':
             self.traits["plant_food"] = 0 #random.randint(0,5)
-=======
->>>>>>> parent of 94540a0... code fixes
