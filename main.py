@@ -2,6 +2,7 @@ import logging
 import copy
 import random
 from base_genome import BASE_GENOME
+from environment import environment
 
 ## Traits are not particular to a specific organism, and must interact
 ## with the environment as well as the organism, so we'll define them  in a
@@ -13,8 +14,10 @@ class gene_struct:
         self.binding = 0
         self.quantifier = 0
 
+environ = environment()
+
 ## These must not overlap!
-traits = {"123": "size", "456": "metabolism"}
+traits = {"032": "strength", "123": "size", "456": "metabolism", "503": "speed", "666": "greediness", "689": "intelligence"}
 stimuli = {"043": "temperature", "375": "food"}
 
 class organism:
@@ -23,30 +26,30 @@ class organism:
         for j in range(800):
             self.code.append(random.randint(0, 9))
         logging.debug("Code is {}".format(self.code))
-        self.size = 10
+        self.code = "0001011010101"
+        self.traits = {"size": 10, "strength": 6, "metabolism": 6, "speed": 2, "greediness": 8, "intelligence": 10}
         self.health = 10
         self.dead = False
-        self.traits = {"size": 1, "metabolism": 1}
+        self.start_posx = 1  #random.randint(0, 7)
+        self.start_posy = 1  #random.randint(0, 7)
+        self.current_pos = (self.start_posx, self.start_posy)
 
     def get_genes(self):
         self.genes = []
         start_pos = 0
         end_pos = 0
-        codon = [0, 0, 0]
         in_gene = False
         for i in range(2, len(self.code)):
-            codon[0] = self.code[i - 2]
-            codon[1] = self.code[i - 1]
-            codon[2] = self.code[i]
-            if is_start_codon(codon) and not in_gene:
-                in_gene = True
+            if is_start_codon(self.code[i - 2], self.code[i - 1]) and not in_gene:
                 start_pos = i - 2
-            elif is_end_codon(codon) and in_gene:
+                in_gene = True
+            elif is_end_codon(self.code[i - 2], self.code[i - 1]) and in_gene:
                 end_pos = i
                 in_gene = False
                 self.genes.append(self.code[start_pos:end_pos])
         return self.genes
 
+<<<<<<< HEAD
     def genes_to_traits(self):
         gene_traits = []
 
@@ -108,6 +111,13 @@ def is_end_codon(codon):
     else:
         return False
 
+# This should give us the start of a gene approximately 1/100 codons.
+def is_start_codon(first_base, second_base):
+    if first_base == 0 and second_base == 1:
+        return True
+    else:
+        return False
+
 def is_sensory(index):
     if index in stimuli:
         return True
@@ -125,44 +135,32 @@ def apply_operator_to_trait(self, index, operator, quantifier):
     trait_type = traits[index]
     self.traits[trait_type] = apply_operator(operator, quantifier, self.traits[trait_type])
 
-def binds(codon1, codon2):
-    if codon1 == codon2:
+
+# This should give us the end of a gene approximately 1/100 codons.
+def is_end_codon(first_base, second_base):
+    if first_base == 0 and second_base == 1:
         return True
     else:
         return False
 
-def apply_operator(operator, quantifier, target):
-    ## We're going to make 
-    if operator < 250:
-        return target + quantifier
-
-    elif operator >= 205 and operator < 500 :
-        return target - quantifier
-
-    elif operator >=500 and operator < 750 :
-        return target * (quantifier / 100)
-    else :
-        return target / (quantifier / 100)
 
 class orgs:
     def __init__(self):
         self.organisms = [organism() for i in range(2)]
 
     def death(self):
-        list_index = 0
+        new_orgs = []
         for org in self.organisms:
-            if org.health <= 0:
-                logging.debug("Dying")
-                del self.organisms[list_index]
+            if org.health > 0:
+                new_orgs.append(org)
             else:
-                list_index += 1
+                logging.debug("An organism dies")
+        self.organisms = new_orgs
 
     def reproduce(self):
         new_orgs = []
         for org in self.organisms:
             if org.health > 6:
-                logging.debug("Reproducing")
-
                 # Giving birth costs health.
                 org.health -= 1
 
@@ -173,10 +171,13 @@ class orgs:
         self.organisms += new_orgs
 
     def mutate(self):
-        return
+        '''
+        Randomly select a trait and randomly increment or decrement the size
+        trait by 1. Randomly. '''
+        #for each organism (some percentage get the murtation applied)
 
-    def translation(self, environment):
         for org in self.organisms:
+<<<<<<< HEAD
             org.get_genes()
             org.genes_to_traits()
             org.apply_sensory(environment)
@@ -193,28 +194,43 @@ class environment:
         # Anything in environment that needs to change (e.g. plants grow)
 
         # Environment acts on organisms
+            #logging.debug("Mutating")
+            random_trait = random.choice(list(org.traits))
+            #print(random_trait)
+            if random.choice([1, 2]) == 1:
+                org.traits[random_trait] += 1
+            else:
+                org.traits[random_trait] -= 1
 
-        return
+    def translation(self):
+        for org in self.organisms:
+            org.get_genes()
 
-    def live(self, organisms):
-        for num in range(len(organisms.organisms)):
-            organism = organisms.organisms[num]
-            organism.health += self.food
-            self.food -= 1
+    def eat(self):
+        '''Loop through organisms and get them to eat if there is food'''
+        # always eat plants
+        logging.debug("Eating")
+        for org in self.organisms:
+            if environ.location(org.current_pos).plant_food > 0:
+                environ.location(org.current_pos).plant_food -= 1
+                logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
+            else:
+                org.health -= 1
 
 
 logging.basicConfig(level=logging.ERROR)
 logging.debug("Starting!")
 
-environ = environment()
 organisms = orgs()
 for years in range(10):
     logging.debug("loop number {}!".format(years))
     organisms.mutate()
-    organisms.translation(environ)
+    organisms.translation()
 
     environ.main(organisms)
-
+    organisms.eat()
     organisms.death()
     organisms.reproduce()
+
+
     logging.debug("we have {}".format(len(organisms.organisms)))
