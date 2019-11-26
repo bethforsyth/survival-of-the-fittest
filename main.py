@@ -9,6 +9,9 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
+        self.start_posx = random.randint(5,15)
+        self.start_posy = random.randint(5,15)
+        self.current_pos = environment.location[self.start_posx][self.start_posy]
 
 
 class orgs:
@@ -56,6 +59,54 @@ class orgs:
         # Turn the genetic code into characteristics.
         return
 
+<<<<<<< HEAD
+=======
+class environment:
+    def __init__(self):
+        self.food = 30
+
+    def position(self, location_id=1, x=0, y=0, temperature=0):
+        global location
+        location=[location_id, x, y, temperature]
+        counter1=0
+        counter2=0
+        counter3=0
+        while counter2<21:
+            environment.append(position(counter3, counter1, counter2).location)
+            counter1+=1
+            counter3+=1
+
+            if counter1>20:
+                counter1-=20
+                counter2+=1
+
+    def main(self, organisms):
+        # Anything in environment that needs to change (e.g. plants grow)
+
+        # Environment acts on organisms
+
+        return
+
+    def live(self, organisms):
+        for num in range(len(organisms.organisms)):
+            organism = organisms.organisms[num]
+            organism.health += self.food
+            self.food -= 1
+
+    def count_organisms_at_pos:
+        self.posx = 0
+        self.posy = 0
+        self.cur_check = position[self.posx][self.posy]
+        if :
+
+
+
+# month = 1
+# if month > 12:
+#     month-=12
+# temperature = 20-((month-6)^2)/4
+
+>>>>>>> 1bf91693137e8a16f2e98de8accf627f3dee7595
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
@@ -73,3 +124,19 @@ for years in range(10):
     organisms.reproduce()
 
     logging.debug("we have {}".format(len(organisms.organisms)))
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+
+
+
+
+
+<<<<<<< HEAD
+#test pushing x2
+=======
+>>>>>>> cb266f10defe86e79e7648e53c46db99cbe028e4
+=======
+>>>>>>> d46e7d3d789d639fb3e64bdfa4d06681f459bf89
+>>>>>>> 1bf91693137e8a16f2e98de8accf627f3dee7595
