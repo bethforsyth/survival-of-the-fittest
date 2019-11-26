@@ -164,7 +164,7 @@ class orgs:
     def reproduce(self):
         new_orgs = []
         for org in self.organisms:
-            if org.health > 6:
+            if org.health > 7:
                 # Giving birth costs health.
                 org.health -= 1
 
@@ -172,8 +172,12 @@ class orgs:
                 new_org = organism()
                 new_org.start_posx = org.current_pos[0]
                 new_org.start_posy = org.current_pos[1]
-                new_org.health = 10
+                new_org.health = 6
                 new_orgs.append(new_org)
+
+                if (org.health-5+org.traits.get("metabolism"))>7:
+                    org.health -= 2
+                    new_orgs.append(new_org)
         self.organisms += new_orgs
 
     def move(self):
