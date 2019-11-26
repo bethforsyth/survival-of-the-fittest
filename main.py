@@ -8,9 +8,9 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
-        self.start_posx = random.randint(5,15)
-        self.start_posy = random.randint(5,15)
-        self.current_pos = environment.location[self.start_posx][self.start_posy]
+        # self.start_posx = random.randint(5,15)
+        # self.start_posy = random.randint(5,15)
+        # self.current_pos = environment.location[self.start_posx][self.start_posy]
 
 
 class orgs:
@@ -43,16 +43,43 @@ class orgs:
         '''
         Randomly select a trait and randomly increment or decrement the size
         trait by 1. Randomly. '''
-        #for each organism (some percentage get the murtation applied)
+        #for each organism (some percentage get the mutation applied)
 
         for org in self.organisms:
             logging.debug("Mutating")
-            random_trait = random.choice(list(org.traits))
-            print(random_trait)
-            if random.choice([1, 2]) == 1:
-                org.traits[random_trait] += 1
+
+        #Randomly select a trait and randomly increment or decrement the size
+        #trait by 1.
+
+            # random_trait = random.choice(list(org.traits))
+            # print(random_trait)
+            # if random.choice([1, 2]) == 1:
+            #     org.traits[random_trait] += 1
+            # else:
+            #     org.traits[random_trait] -= 1
+
+        #different versions of mutating genetic code
+        # choose which mutation
+            if random.randint(1, 4) == 1:
+                #duplication
+                logging.debug("duplication mutation")
+            elif random.randint(1, 4) == 2:
+                logging.debug("delete mutation")
+
+                def mutate_deletion(self):
+                    code_as_list = []
+                    for digit in org.code:
+                        code_as_list.append(digit)
+                    code_as_list.pop(random.randrange(len(code_as_list)))
+                    return "".join(code_as_list)
+                mutate_deletion(self)
+
+            elif random.randint(1, 4) == 3:
+                #add
+                logging.debug("addition mutation")
             else:
-                org.traits[random_trait] -= 1
+                #change
+                logging.debug("change mutation")
 
     def translation(self):
         # Turn the genetic code into characteristics.
@@ -90,11 +117,11 @@ class environment:
             organism.health += self.food
             self.food -= 1
 
-    def count_organisms_at_pos:
-        self.posx = 0
-        self.posy = 0
-        self.cur_check = position[self.posx][self.posy]
-        if :
+    # def count_organisms_at_pos:
+    #     self.posx = 0
+    #     self.posy = 0
+    #     self.cur_check = position[self.posx][self.posy]
+    #     if :
 
 
 
@@ -120,16 +147,3 @@ for years in range(10):
     organisms.reproduce()
 
     logging.debug("we have {}".format(len(organisms.organisms)))
-<<<<<<< HEAD
-
-
-
-
-
-
-<<<<<<< HEAD
-#test pushing x2
-=======
->>>>>>> cb266f10defe86e79e7648e53c46db99cbe028e4
-=======
->>>>>>> d46e7d3d789d639fb3e64bdfa4d06681f459bf89
