@@ -58,52 +58,6 @@ class orgs:
         # Turn the genetic code into characteristics.
         return
 
-class environment:
-    def __init__(self):
-        self.food = 30
-
-    def position(self, location_id=1, x=0, y=0, temperature=0):
-        global location
-        location=[location_id, x, y, temperature]
-        counter1=0
-        counter2=0
-        counter3=0
-        while counter2<21:
-            environment.append(position(counter3, counter1, counter2).location)
-            counter1+=1
-            counter3+=1
-
-            if counter1>20:
-                counter1-=20
-                counter2+=1
-
-    def main(self, organisms):
-        # Anything in environment that needs to change (e.g. plants grow)
-
-        # Environment acts on organisms
-
-        return
-
-    def live(self, organisms):
-        for num in range(len(organisms.organisms)):
-            organism = organisms.organisms[num]
-            organism.health += self.food
-            self.food -= 1
-
-    def count_organisms_at_pos:
-        self.posx = 0
-        self.posy = 0
-        self.cur_check = position[self.posx][self.posy]
-        if :
-
-
-
-# month = 1
-# if month > 12:
-#     month-=12
-# temperature = 20-((month-6)^2)/4
-
-
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
 
@@ -120,16 +74,3 @@ for years in range(10):
     organisms.reproduce()
 
     logging.debug("we have {}".format(len(organisms.organisms)))
-<<<<<<< HEAD
-
-
-
-
-
-
-<<<<<<< HEAD
-#test pushing x2
-=======
->>>>>>> cb266f10defe86e79e7648e53c46db99cbe028e4
-=======
->>>>>>> d46e7d3d789d639fb3e64bdfa4d06681f459bf89
