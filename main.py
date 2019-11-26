@@ -42,8 +42,8 @@ class orgs:
 
     def mutate(self):
         '''
-        Randomly select a trait and randomly increment or decrement the size
-        trait by 1. Randomly. '''
+        Randomly select a type of mutation (duplication, deletion, addition or
+        code change) and apply to each organism.'''
         #for each organism (some percentage get the mutation applied)
 
         for org in self.organisms:
@@ -72,6 +72,7 @@ class orgs:
                     for digit in org.code:
                         code_as_list.append(digit)
                     code_as_list.pop(random.randrange(len(code_as_list)))
+                    print("original code: " + org.code + " mutated code:" + ("".join(code_as_list)))
                     return "".join(code_as_list)
                 mutate_deletion(self)
 
