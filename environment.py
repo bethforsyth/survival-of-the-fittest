@@ -10,6 +10,7 @@ class environment:
         xrow = []
         while x < self.size:
             xrow.append(location(x, y))
+            xrow[y].randomise()
             y += 1
             if y >= self.size:
                 y = 0
@@ -43,6 +44,8 @@ class environment:
                 self.grid[i][j].humidity = humidity
                 self.grid[i][j].temperature = temperature
 
+    def location(self, pos):
+        return self.grid[pos[0]][pos[1]]
 
 class location():
     """A location object to include position characteristics"""
