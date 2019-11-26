@@ -95,12 +95,20 @@ class orgs:
 
     def environment_effect(self):
         for org in self.organisms:
-            self.temperature_range_min = self.size*(-2)
-            self.temperature_range_max = 45 - self.size * 2
-            if environ.location(org.current_pos).temperature < self.temperature_range_min:
-                org.health -= math.round(self.temperature_range_min-environ.location(org.current_pos).temperature)
-            elif environ.location(org.current_pos).temperature < self.temperature_range_max:
-                org.health -= math.round(self.temperature_range_max-environ.location(org.current_pos).temperature)
+            def temp_effect(self):
+                self.temperature_range_min = self.size*(-2)
+                self.temperature_range_max = 45 - self.size * 2
+                if environ.location(org.current_pos).temperature < self.temperature_range_min:
+                    org.health -= math.round(self.temperature_range_min-environ.location(org.current_pos).temperature)
+                elif environ.location(org.current_pos).temperature < self.temperature_range_max:
+                    org.health -= math.round(self.temperature_range_max-environ.location(org.current_pos).temperature)
+            temp_effect(self)
+            def humidity_effect(self):
+                if environ.location(org.current_pos).humidity * org.traits['size'] > 6 and random.randint(0,1)==1:
+                    org.health -= 1
+            humidity_effect(self)
+
+
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
