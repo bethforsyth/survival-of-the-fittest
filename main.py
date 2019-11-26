@@ -70,7 +70,7 @@ class organism:
             my_gene.index = "".join(map(str, gene[3:6]))
             my_gene.operator = int("".join(map(str, gene[6:9])))
             my_gene.binding = int("".join(map(str, gene[9:12])))
-            my_gene.quantifier = int("".join(map(str, gene[12:])))
+            my_gene.quantifier = 100*average(gene[12:])
 
             gene_traits.append(my_gene)
 
@@ -85,6 +85,13 @@ class organism:
                         stimulus = get_stimulus(gene.index)
                         new_quantifier = apply_operator(gene.operator, stimulus*gene.quantifier, other_gene.quantifiers)
                         other_gene.quantifier = new_quantifier
+
+    def no_of_traits(self):
+        no = 0
+        for gene in self.gene_traits:
+            if is_sensory(gene.index) or is_trait(gene.index):
+                no += 1
+        return no
 
     def apply_regulatory(self):
         for gene in self.gene_traits:
@@ -110,6 +117,12 @@ def is_start_codon(codon):
 # This should give us the end of a gene approximately 1/100 codons.
 def is_end_codon(codon):
     if codon[0] == 9 and codon[1] == 8:
+        return True
+    else:
+        return False
+
+def binds(codon1, codon2):
+    if codon1 == codon2:
         return True
     else:
         return False
@@ -149,6 +162,8 @@ def is_end_codon(first_base, second_base):
 class orgs:
     def __init__(self):
         self.organisms = [organism() for i in range(2)]
+        self.times = []
+        self.found_indexes =[]
 
     def death(self):
         new_orgs = []
@@ -202,9 +217,9 @@ class orgs:
             logging.debug("Mutating")
             if random.randint(1, 4) == 1:
                 logging.debug("Duplicating DNA")
-###############################################################################
-#           Duplication mutation                                              #
-###############################################################################
+                ###############################################################################
+                #           Duplication mutation                                              #
+                ###############################################################################
                 def mutate_duplicate(self):
                     '''
                     Duplicate piece of organism's code inbetween random indices.
@@ -224,9 +239,9 @@ class orgs:
 
             elif random.randint(1, 4) == 2:
                 logging.debug("delete mutation")
-###############################################################################
-#           Deletion mutation                                                 #
-###############################################################################
+                ###############################################################################
+                #           Deletion mutation                                                 #
+                ###############################################################################
                 def mutate_deletion(self):
                     '''
                     Randomly delete one of the digits from the organism's code.
@@ -253,9 +268,9 @@ class orgs:
             elif random.randint(1, 4) == 3:
                 logging.debug("addition mutation")
 
-###############################################################################
-#           Addition mutation                                                 #
-###############################################################################
+                ###############################################################################
+                #           Addition mutation                                                 #
+                ###############################################################################
                 def addition_mutation(self):
                     '''
                     Add a new digit to a random place in the organism's code.
@@ -270,9 +285,9 @@ class orgs:
 
             else:
                 logging.debug("change mutation")
-###############################################################################
-#           Change mutation                                                   #
-###############################################################################
+                ###############################################################################
+                #           Change mutation                                                   #
+                ###############################################################################
                 def change_mutation(self):
                     '''
                     Change a random slice of the organism's code to a random
@@ -294,15 +309,22 @@ class orgs:
                     return org.code
                 change_mutation(self)
 
-    def translation(self):
+    def translation(self, year):
         # Turn the genetic code into characteristics.
         logging.debug("Translating!")
+        num_traits = 0
         for org in self.organisms:
             org.get_genes()
             org.genes_to_traits()
+            num_traits += org.no_of_traits()
             org.apply_sensory(environ)
             org.apply_regulatory()
             org.apply_trait()
+
+        self.times.append(year)
+        self.found_indexes.append(num_traits)
+
+
 
 # month = 1
 # if month > 12:
@@ -346,10 +368,10 @@ organisms = orgs()
 
 watched_creature = (environ.location(organisms.organisms[0].current_pos)).organisms_list[0]
 
-for years in range(20):
+for years in range(7):
     logging.debug("loop number {}!".format(years))
     organisms.mutate()
-    organisms.translation()
+    organisms.translation(years)
 
     environ.main(organisms)
     # organisms.eat()
@@ -364,3 +386,5 @@ for years in range(20):
     logging.debug("we have {}".format(len(organisms.organisms)))
 
     draw_map(environ, organisms)
+
+logging.info(organisms.found_indexes)
