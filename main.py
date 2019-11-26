@@ -2,6 +2,7 @@ import logging
 import copy
 import random
 from environment import environment
+from game_map import draw_map
 
 environ = environment()
 
@@ -90,3 +91,5 @@ for years in range(10):
 
 
     logging.debug("we have {}".format(len(organisms.organisms)))
+
+    draw_map(environ, organisms)
