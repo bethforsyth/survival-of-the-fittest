@@ -175,7 +175,7 @@ class orgs:
                 new_org.health = 6
                 new_orgs.append(new_org)
 
-                if (org.health-5+org.traits.get("metabolism"))>7:
+                if org.traits.get("metabolism") > 5 and (org.health-5+org.traits.get("metabolism"))>7:
                     org.health -= 2
                     new_orgs.append(new_org)
         self.organisms += new_orgs
