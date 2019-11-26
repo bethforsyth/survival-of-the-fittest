@@ -10,7 +10,7 @@ class organism:
         self.dead = False
         self.start_posx = random.randint(5,15)
         self.start_posy = random.randint(5,15)
-        self.current_pos = environment.location[start_posx][start_posy]
+        self.current_pos = environment.location[self.start_posx][self.start_posy]
 
 
 class orgs:
@@ -89,6 +89,13 @@ class environment:
             organism = organisms.organisms[num]
             organism.health += self.food
             self.food -= 1
+
+    def count_organisms_at_pos:
+        self.posx = 0
+        self.posy = 0
+        self.cur_check = position[self.posx][self.posy]
+        if :
+
 
 
 # month = 1
