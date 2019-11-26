@@ -27,7 +27,7 @@ class organism:
         for j in range(800):
             self.code.append(random.randint(0, 9))
         logging.debug("Code is {}".format(self.code))
-        self.code = "0001011010101"
+        self.code = "001234567890123"
         self.traits = {"size": 10, "strength": 6, "metabolism": 6, "speed": 2, "greediness": 8, "intelligence": 10}
         self.health = 10
         self.dead = False
@@ -66,8 +66,8 @@ class organism:
             ## getting occasional run-time errors here, and I'm not quite sure why - possibly too long?
             my_gene.index = "".join(map(str, gene[3:6]))
             my_gene.operator = int("".join(map(str, gene[6:9])))
-            my_gene.binding = int("".join(map(str, gene[9:12]))) 
-            my_gene.quantifier = int("".join(map(str, gene[12:]))) 
+            my_gene.binding = int("".join(map(str, gene[9:12])))
+            my_gene.quantifier = int("".join(map(str, gene[12:])))
 
             gene_traits.append(my_gene)
 
@@ -172,45 +172,106 @@ class orgs:
 
     def mutate(self):
         '''
-        Randomly select a trait and randomly increment or decrement the size
-        trait by 1. Randomly. '''
+        Randomly select a type of mutation (duplication, deletion, addition or
+        code change) and apply to each organism.'''
         #for each organism (some percentage get the mutation applied)
 
         for org in self.organisms:
             logging.debug("Mutating")
-
-        #Randomly select a trait and randomly increment or decrement the size
-        #trait by 1.
-
-            # random_trait = random.choice(list(org.traits))
-            # print(random_trait)
-            # if random.choice([1, 2]) == 1:
-            #     org.traits[random_trait] += 1
-            # else:
-            #     org.traits[random_trait] -= 1
-
-        #different versions of mutating genetic code
-        # choose which mutation
             if random.randint(1, 4) == 1:
-                #duplication
-                logging.debug("duplication mutation")
+                logging.debug("Duplicating DNA")
+###############################################################################
+#           Duplication mutation                                              #
+###############################################################################
+                def mutate_duplicate(self):
+                    '''
+                    Duplicate piece of organism's code inbetween random indices.
+                    '''
+                    logging.debug("duplicate mutation")
+                    random_index1 = random.randint(0,len(org.code)-1)
+                    random_index2 = random.randint(0,len(org.code)-1)
+                    start_index = min(random_index1, random_index2)
+                    end_index = max(random_index1, random_index2)
+
+                    #length_of_copy = end_index-start_index
+                    mutated_code = (org.code[:start_index] +
+                        org.code[start_index:end_index]*2 + org.code[end_index:])
+                    #print("Old code: ", org.code, "\nNew code: ", mutated_code, "(Duplicated from %d to %d)"%(start_index, end_index))
+                    return(mutated_code)
+                mutate_duplicate(self)
+
             elif random.randint(1, 4) == 2:
                 logging.debug("delete mutation")
-
+###############################################################################
+#           Deletion mutation                                                 #
+###############################################################################
                 def mutate_deletion(self):
+                    '''
+                    Randomly delete one of the digits from the organism's code.
+                    '''
                     code_as_list = []
                     for digit in org.code:
                         code_as_list.append(digit)
-                    code_as_list.pop(random.randrange(len(code_as_list)))
-                    return "".join(code_as_list)
+
+                    random_index1 = random.randint(0,len(org.code)-1)
+                    random_index2 = random.randint(0,len(org.code)-1)
+                    start_index = min(random_index1, random_index2)
+                    end_index = max(random_index1, random_index2)
+
+                    print("start, end are", start_index, end_index)
+                    for index in range(end_index, start_index, -1):
+                        print("length of code_as_list is ", len(code_as_list), "index is ", index)
+                        del code_as_list[index]
+                    mutated_code = "".join(code_as_list)
+                    print('\n', org.code, 'is the original code\n', mutated_code, 'is the mutated code')
+                    org.code = mutated_code
+                    return mutated_code
                 mutate_deletion(self)
 
             elif random.randint(1, 4) == 3:
-                #add
                 logging.debug("addition mutation")
+
+###############################################################################
+#           Addition mutation                                                 #
+###############################################################################
+                def addition_mutation(self):
+                    '''
+                    Add a new digit to a random place in the organism's code.
+                    '''
+                    code_as_list = list(org.code)
+                    code_as_list.insert(random.randint(0, len(org.code)), str(random.randint(0,9)))
+                    new_code = ''.join(code_as_list)
+                    #print("original code: " + org.code + " mutated code:" + new_code)
+                    return new_code
+
+                addition_mutation(self)
+
             else:
-                #change
                 logging.debug("change mutation")
+###############################################################################
+#           Change mutation                                                   #
+###############################################################################
+                def change_mutation(self):
+                    '''
+                    Change a random slice of the organism's code to a random
+                    string of 1s and 0s.
+                    '''
+                    random_length = random.randint(0, len(org.code))
+                    random_index = random.randint(0, len(org.code)-1)
+
+                    print("original code:", org.code)
+                    print("changing " + str(random_length) + " nucleotides at index " + str(random_index))
+                    new_code = []
+                    new_code_str = ""
+                    for i in range(random_length):
+                        new_code.append(str(random.randint(0,9)))
+                        new_code_str = "".join(new_code)
+
+                    org.code = org.code[:random_index] + new_code_str + org.code[random_index + (random_length -1):]
+                    print("new_code:", org.code)
+                    return org.code
+                change_mutation(self)
+
 
     def translation(self):
         # Turn the genetic code into characteristics.
