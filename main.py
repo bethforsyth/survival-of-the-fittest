@@ -1,12 +1,13 @@
 import logging
 import copy
 import random
+from base_genome import BASE_GENOME
 
 
 class organism:
     def __init__(self):
-        self.code = []
-        for j in range(1000):
+        self.code = BASE_GENOME
+        for j in range(800):
             self.code.append(random.randint(0, 9))
         logging.debug("Code is {}".format(self.code))
         self.size = 10
