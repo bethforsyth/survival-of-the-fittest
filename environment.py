@@ -2,6 +2,7 @@ import random
 
 
 class environment:
+    """The environment objects"""
     def grid_create(self):
         grid = []
         x = 0
@@ -20,7 +21,7 @@ class environment:
     def __init__(self):
         self.size = 10
         self.grid = self.grid_create()
-        print(self.grid)
+        self.standard_environment()
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
@@ -28,12 +29,19 @@ class environment:
         # Environment acts on organisms
         return
 
-
     def live(self, organisms):
         for num in range(len(organisms.organisms)):
             organism = organisms.organisms[num]
             organism.health += self.food
             self.food -= 1
+
+    def standard_environment(self):
+        for i in range(self.size):
+            humidity = i / self.size
+            for j in range(self.size):
+                temperature = -20 + 60 * j / self.size
+                self.grid[i][j].humidity = humidity
+                self.grid[i][j].temperature = temperature
 
 
 class location():
