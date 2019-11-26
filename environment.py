@@ -10,6 +10,7 @@ class environment:
         xrow = []
         while x < self.size:
             xrow.append(location(x, y))
+            xrow[y].randomise()
             y += 1
             if y >= self.size:
                 y = 0
@@ -22,6 +23,7 @@ class environment:
         self.size = 10
         self.grid = self.grid_create()
         self.standard_environment()
+
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
@@ -42,6 +44,9 @@ class environment:
                 temperature = -20 + 60 * j / self.size
                 self.grid[i][j].humidity = humidity
                 self.grid[i][j].temperature = temperature
+
+    def location(self, pos):
+        return self.grid[pos[0]][pos[1]]
 
 
 class location():
