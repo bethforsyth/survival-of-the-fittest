@@ -14,8 +14,8 @@ class organism:
         self.traits = {"size":10, "strength":6, "speed":2, "greediness":8, "intelligence":10}
         self.health = 10
         self.dead = False
-        self.start_posx = random.randint(0, 7)
-        self.start_posy = random.randint(0, 7)
+        self.start_posx = random.randint(0, 9)
+        self.start_posy = random.randint(0, 9)
         self.current_pos = [self.start_posx, self.start_posy]
         (environ.location(self.current_pos)).organisms_list.append(self)
 
@@ -31,7 +31,7 @@ class orgs:
                 new_orgs.append(org)
             else:
                 number_of_deaths+=1
-        logging.debug(f"{number_of_deaths} organisms died")
+        logging.debug("{number_of_deaths} organisms died")
         self.organisms = new_orgs
 
     def reproduce(self):
@@ -53,9 +53,9 @@ class orgs:
         for org in self.organisms:
             self.move_x+=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
             self.move_y+=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
-            if self.move_x > 0 and self.move_x < environ.size and self.move_y > 0 and self.move_y < environ.size
-            self.current_pos = [self.move_x, self.move_y]
-            (environ.location(self.current_pos)).organisms_list_after_move.append(self)
+            if self.move_x > 0 and self.move_x < environ.size and self.move_y > 0 and self.move_y < environ.size:
+                self.current_pos = [self.move_x, self.move_y]
+            #(environ.location(self.current_pos)).organisms_list_after_move.append(self)
 
         for x in environ.size:
             for y in environ.size:
