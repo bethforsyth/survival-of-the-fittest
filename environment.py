@@ -106,7 +106,7 @@ class location():
         self.traits["light_level"] = random.random()
 
     def plants_grow(self):
-        self.traits["plant_food"] = (1 + self.traits["light_level"]) * self.traits["plant_food"]
+        self.traits["plant_food"] = (1 + 0.2 * self.traits["light_level"]) * self.traits["plant_food"]
 
 
     def meat_rots(self):

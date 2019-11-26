@@ -36,7 +36,7 @@ class organism:
         self.start_posx = random.randint(0, 9)
         self.start_posy = random.randint(0, 9)
         self.current_pos = (self.start_posx, self.start_posy)
-        (environ.location(self.current_pos)).organisms_list.append(self)  
+        (environ.location(self.current_pos)).organisms_list.append(self)
 
     def get_genes(self):
         self.genes = []
@@ -346,7 +346,7 @@ organisms = orgs()
 
 watched_creature = (environ.location(organisms.organisms[0].current_pos)).organisms_list[0]
 
-for years in range(10):
+for years in range(20):
     logging.debug("loop number {}!".format(years))
     organisms.mutate()
     organisms.translation()
