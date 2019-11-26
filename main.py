@@ -15,7 +15,7 @@ class organism:
         self.dead = False
         self.start_posx = random.randint(0, 7)
         self.start_posy = random.randint(0, 7)
-        self.current_pos = (self.start_posx, self.start_posy)
+        self.current_pos = [self.start_posx, self.start_posy]
         (environ.location(self.current_pos)).organisms_list.append(self)
 
 class orgs:
@@ -30,7 +30,7 @@ class orgs:
                 new_orgs.append(org)
             else:
                 number_of_deaths+=1
-            logging.debug(f"{number_of_deaths} organisms died")
+        logging.debug(f"{number_of_deaths} organisms died")
         self.organisms = new_orgs
 
     def reproduce(self):
@@ -38,7 +38,7 @@ class orgs:
         for org in self.organisms:
             if org.health > 6:
                 # Giving birth costs health.
-                org.health -= 1
+                org.health -= 2
 
                 # Create a baby! Obviously the baby is born with full health.
                 new_org = organism()
@@ -47,6 +47,18 @@ class orgs:
                 new_org.health = 10
                 new_orgs.append(new_org)
         self.organisms += new_orgs
+
+    def move(self):
+        for org in self.organisms:
+            self.move_x=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            self.move_y=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            self.current_pos = [self.move_x, self.move_y]
+            (environ.location(self.current_pos)).organisms_list_after_move.append(self)
+
+        for x in environ.size:
+            for y in environ.size:
+                environ.location.organisms_list=environ.location.organisms_list_after_move
+                environ.location.organisms_list_after_move=[]
 
     def mutate(self):
         '''
@@ -73,7 +85,7 @@ class orgs:
         logging.debug("Eating")
         for org in self.organisms:
             food_consump = math.floor(org.traits.get("size")/4)
-            if environ.location(org.current_pos).plant_food > 0:
+            if environ.location(org.current_pos).plant_food >= food_consump:
                 environ.location(org.current_pos).plant_food -= food_consump
                 logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
                 org.health += round(food_consump/2) + 1

@@ -79,6 +79,7 @@ class location():
         self.light_level = 0  # how bright a place is (between 0 and 1)
         self.organism_number = 0
         self.organisms_list = []
+        self.organisms_list_after_move = []
 
     def randomise(self):
         self.temperature = random.randint(-20, 40)
