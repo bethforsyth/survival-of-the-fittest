@@ -55,7 +55,7 @@ class orgs:
             self.new_posy = animale.current_pos[1] + self.move_y
             if self.new_posx > 0 and self.new_posx < 10 and self.new_posy > 0 and self.new_posy < 10:
                 self.current_pos = (self.new_posx, self.new_posy)
-                animale.current_pos=self.current_pos
+            animale.current_pos=self.current_pos
             (environ.location(self.current_pos)).organisms_list_after_move.append(self)
 
         for x in range(0, environ.size):
