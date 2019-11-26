@@ -66,6 +66,7 @@ class environment:
             location.organism_count(organisms)
 
 
+
 class location():
     """A location object to include position characteristics"""
     def __init__(self, xpos, ypos):
@@ -87,6 +88,7 @@ class location():
         self.meat_food = random.randint(0, 200)
         self.humidity = random.random()
         self.light_level = random.random()
+        self.terrain = random.choice(['grass','sand'])
 
     def plants_grow(self):
         self.plant_food = math.floor((1 + 0.25 * self.light_level) * self.plant_food)
@@ -102,3 +104,8 @@ class location():
                 self.organism_number += 1
             else:
                 pass
+    def set_terrain(self):
+        if self.temperature > 30:
+            self.terrain = 'sand'
+        elif self.temperature < -10:
+            self.terrain = 'snow'
