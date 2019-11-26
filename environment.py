@@ -24,6 +24,7 @@ class environment:
         self.size = 10
         self.grid = self.grid_create()
         self.standard_environment()
+        self.set_terrain()
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
@@ -66,6 +67,9 @@ class environment:
             location.organism_count(organisms)
 
 
+    def set_terrain(self):
+        for location in self.list_locations():
+            location.set_terrain()
 
 class location():
     """A location object to include position characteristics"""

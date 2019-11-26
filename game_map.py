@@ -1,7 +1,7 @@
 import pygame
 
-window_height = 1000
-window_length = 1000
+window_height = 800
+window_length = 800
 pygame.init()
 screen = pygame.display.set_mode((window_height, window_length))
 GREEN = (0, 200, 0)
