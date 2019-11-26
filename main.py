@@ -1,6 +1,7 @@
 import logging
 import copy
 import random
+import math
 from environment import environment
 
 environ = environment()
@@ -39,6 +40,8 @@ class orgs:
 
                 # Create a baby! Obviously the baby is born with full health.
                 new_org = organism()
+                new_org.start_posx = org.start_posx
+                new_org.start_posy = org.start_posy
                 new_org.health = 10
                 new_orgs.append(new_org)
         self.organisms += new_orgs
@@ -67,12 +70,22 @@ class orgs:
         # always eat plants
         logging.debug("Eating")
         for org in self.organisms:
+            food_consump = math.floor(org.traits.get("size")/4)
             if environ.location(org.current_pos).plant_food > 0:
-                environ.location(org.current_pos).plant_food -= 1
+                environ.location(org.current_pos).plant_food -= food_consump
                 logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
+                org.health += round(food_consump/2) + 1
             else:
                 org.health -= 4
 
+    def environment_effect(self):
+        for org in self.organisms:
+            self.temperature_range_min = self.size*(-2)
+            self.temperature_range_max = 45 - self.size * 2
+            if environ.location(org.current_pos).temperature < self.temperature_range_min:
+                org.health -= math.round(self.temperature_range_min-environ.location(org.current_pos).temperature)
+            elif environ.location(org.current_pos).temperature < self.temperature_range_max:
+                org.health -= math.round(self.temperature_range_max-environ.location(org.current_pos).temperature)
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Starting!")
