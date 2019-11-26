@@ -50,8 +50,9 @@ class orgs:
 
     def move(self):
         for org in self.organisms:
-            self.move_x=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
-            self.move_y=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            self.move_x+=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            self.move_y+=random.randint(-org.traits.get("speed"), org.traits.get("speed"))
+            if self.move_x > 0 and self.move_x < environ.size and self.move_y > 0 and self.move_y < environ.size
             self.current_pos = [self.move_x, self.move_y]
             (environ.location(self.current_pos)).organisms_list_after_move.append(self)
 
