@@ -15,7 +15,7 @@ class organism:
         self.start_posx = 1  #random.randint(0, 7)
         self.start_posy = 1  #random.randint(0, 7)
         self.current_pos = (self.start_posx, self.start_posy)
-
+        (environment.location(self.current_pos)).organism_list.append(self)
 
 class orgs:
     def __init__(self):
