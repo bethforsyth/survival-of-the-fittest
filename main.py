@@ -119,9 +119,9 @@ class orgs:
                     print("changing " + str(random_length) + " nucleotides at index " + str(random_index))
                     new_code = []
                     for i in range(random_length):
-                        new_code.append(random.choice(["1", "2"]))
+                        new_code.append(random.choice(["1", "0"]))
                         new_code_str = "".join(new_code)
-                    org.code = org.code[:random_index] + new_code_str + org.code[random_index + random_length -1:]
+                    org.code = org.code[:random_index] + new_code_str + org.code[random_index + (random_length -1):]
                     print("new_code:", org.code)
                     return org.code
                 change_mutation(self)
