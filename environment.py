@@ -25,7 +25,6 @@ class environment:
         self.grid = self.grid_create()
         self.standard_environment()
         self.set_terrain()
-        self.set_plant_food()
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
@@ -72,10 +71,6 @@ class environment:
         for location in self.list_locations():
             location.set_terrain()
 
-    def set_plant_food(self):
-        for location in self.list_locations():
-            location.set_plant_food()
-
 ## should correspond to environment
 stimuli = {"011": "temperature",
             "021": "plant_food",
@@ -105,7 +100,7 @@ class location():
 
     def randomise(self):
         self.traits["temperature"] = random.randint(-20, 40)
-        self.traits["plant_food"] = random.randint(0, 200)
+        self.traits["plant_food"] = random.randint(0, 1000)
         self.traits["meat_food"] = random.randint(0, 200)
         self.traits["humidity"] = random.random()
         self.traits["light_level"] = random.random()
@@ -128,16 +123,20 @@ class location():
                 self.organism_number += 1
             else:
                 pass
+
     def set_terrain(self):
         if self.temperature > 30:
             self.terrain = 'sand'
         elif self.temperature < -10:
             self.terrain = 'snow'
+<<<<<<< HEAD
 
     def set_plant_food(self):
         if self.terrain == 'grass':
-            self.traits["plant_food"] = random.randint(100, 200)
+            self.traits["plant_food"] = random.randint(20, 50)
         elif self.terrain == 'snow':
-            self.traits["plant_food"] = random.randint(20, 40)
+            self.traits["plant_food"] = random.randint(10, 15)
         elif self.terrain == 'sand':
-            self.traits["plant_food"] = random.randint(5,10)
+            self.traits["plant_food"] = 0 #random.randint(0,5)
+=======
+>>>>>>> parent of 94540a0... code fixes
