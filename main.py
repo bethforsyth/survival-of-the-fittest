@@ -18,25 +18,19 @@ class organism:
         self.genes = []
         start_pos = 0
         end_pos = 0
-        codon = [0, 0, 0]
-        in_gene = False
         for i in range(2, len(self.code)):
-            codon[0] = self.code[i - 2]
-            codon[1] = self.code[i - 1]
-            codon[2] = self.code[i]
-            if is_start_codon(codon) and not in_gene:
-                in_gene = True
+            if is_start_codon(self.code[i - 2], self.code[i - 1]):
                 start_pos = i - 2
-            elif is_end_codon(codon) and in_gene:
-                end_pos = i
-                in_gene = False
+                end_pos = self.analyse_gene(start_pos)
                 self.genes.append(self.code[start_pos:end_pos])
         return self.genes
 
+    def analyse_gene(self, start_pos):
 
+#
 # This should give us the start of a gene approximately 1/100 codons.
-def is_start_codon(codon):
-    if codon[0] == 0 and codon[1] == 1:
+def is_start_codon(first_base, second_base):
+    if first_base == 0 and second_base == 1:
         return True
     else:
         return False
