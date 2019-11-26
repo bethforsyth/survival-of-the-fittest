@@ -173,13 +173,14 @@ class orgs:
                 new_orgs.append(org)
             else:
                 number_of_deaths+=1
+                (environ.location(org.current_pos)).organisms_list.remove(org)
         logging.debug("{number_of_deaths} organisms died")
         self.organisms = new_orgs
 
     def reproduce(self):
         new_orgs = []
         for org in self.organisms:
-            if org.health > 6:
+            if org.health > 7:
                 # Giving birth costs health.
                 org.health -= 1
 
@@ -187,25 +188,29 @@ class orgs:
                 new_org = organism()
                 new_org.start_posx = org.current_pos[0]
                 new_org.start_posy = org.current_pos[1]
-                new_org.health = 10
+                new_org.health = 6
                 new_orgs.append(new_org)
+
+                if org.traits.get("metabolism") > 5 and (org.health-5+org.traits.get("metabolism"))>7:
+                    org.health -= 2
+                    new_orgs.append(new_org)
         self.organisms += new_orgs
 
     def move(self):
         for animale in self.organisms:
-            self.move_x=random.randint(-animale.traits.get("speed"), animale.traits.get("speed"))
-            self.move_y=random.randint(-animale.traits.get("speed"), animale.traits.get("speed"))
-            self.new_posx = animale.current_pos[0] + self.move_x
-            self.new_posy = animale.current_pos[1] + self.move_y
-            if self.new_posx > 0 and self.new_posx < 10 and self.new_posy > 0 and self.new_posy < 10:
-                self.current_pos = (self.new_posx, self.new_posy)
-            animale.current_pos=self.current_pos
-            (environ.location(self.current_pos)).organisms_list_after_move.append(self)
+            move_x=random.randint(- 1, 1)
+            move_y=random.randint(- 1, 1)
+            new_posx = animale.current_pos[0] + move_x
+            new_posy = animale.current_pos[1] + move_y
+            if new_posx > 0 and new_posx < 10 and new_posy > 0 and new_posy < 10:
+                current_pos = (new_posx, new_posy)
+                animale.current_pos = current_pos
+            (environ.location(animale.current_pos)).organisms_list_after_move.append(animale)
 
         for x in range(0, environ.size):
             for y in range(0, environ.size):
-                environ.location(self.current_pos).organisms_list=environ.location(self.current_pos).organisms_list_after_move
-                environ.location(self.current_pos).organisms_list_after_move=[]
+                environ.location((x, y)).organisms_list = environ.location((x, y)).organisms_list_after_move
+                environ.location((x, y)).organisms_list_after_move=[]
 
     def mutate(self):
         '''
@@ -337,12 +342,11 @@ class orgs:
         logging.debug("Eating")
         for org in self.organisms:
             food_consump = math.floor(org.traits.get("size")/4)
-            if environ.location(org.current_pos).plant_food >= food_consump:
-                environ.location(org.current_pos).plant_food -= food_consump
-                # logging.debug("The current food is {}".format(environ.location(org.current_pos).plant_food))
+            if environ.location(org.current_pos).traits["plant_food"] >= food_consump:
+                environ.location(org.current_pos).traits["plant_food"] -= food_consump
                 org.health += round(food_consump/2) + 1
             else:
-                org.health -= 4
+                org.health -= 10
 
     def environment_effect(self):
         for org in self.organisms:
@@ -374,7 +378,7 @@ for years in range(7):
     organisms.translation(years)
 
     environ.main(organisms)
-    # organisms.eat()
+    organisms.eat()
     organisms.death()
     organisms.reproduce()
     organisms.move()
