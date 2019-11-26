@@ -24,11 +24,13 @@ class orgs:
 
     def death(self):
         new_orgs = []
+        number_of_deaths=0
         for org in self.organisms:
             if org.health > 0:
                 new_orgs.append(org)
             else:
-                logging.debug("An organism dies")
+                number_of_deaths+=1
+            logging.debug(f"{number_of_deaths} organisms died")
         self.organisms = new_orgs
 
     def reproduce(self):
