@@ -10,7 +10,7 @@ class organism:
         self.dead = False
         self.start_posx = random.randint(5,15)
         self.start_posy = random.randint(5,15)
-        self.current_pos = environment.location[start_posx[start_posy]]
+        self.current_pos = environment.location[start_posx][start_posy]
 
 
 class orgs:
