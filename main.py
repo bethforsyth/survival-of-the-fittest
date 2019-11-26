@@ -6,12 +6,16 @@ from base_genome import BASE_GENOME
 ## Traits are not particular to a specific organism, and must interact
 ## with the environment as well as the organism, so we'll define them  in a
 
-class gene_traits:
+class gene_struct:
     def __init__(self):
         self.index = 0
         self.operator = 0
         self.binding = 0
         self.quantifier = 0
+
+## These must not overlap!
+traits = {"123": "size", "456": "metabolism"}
+stimuli = {"043": "temperature", "375": "food"}
 
 class organism:
     def __init__(self):
@@ -22,6 +26,7 @@ class organism:
         self.size = 10
         self.health = 10
         self.dead = False
+        self.traits = {"size": 1, "metabolism": 1}
 
     def get_genes(self):
         self.genes = []
@@ -46,7 +51,7 @@ class organism:
         gene_traits = []
 
         for gene in self.genes:
-            my_gene = gene_traits()
+            my_gene = gene_struct()
             ## Genes are structures where
             ## pos 0-2 is the start codon
             ## pos 3-5 is the gene index (which tells us whether this
@@ -54,8 +59,10 @@ class organism:
             ## pos 6-8 is the operator
             ## pos 9-11 is binding site
             ## the rest to the end is the quantifier
-            my_gene.index = int("".join(map(str, gene[3:6]))) 
-            my_gene.operator = int("".join(map(str, gene[6:9]))) 
+
+            ## getting occasional run-time errors here, and I'm not quite sure why - possibly too long?
+            my_gene.index = "".join(map(str, gene[3:6]))
+            my_gene.operator = int("".join(map(str, gene[6:9])))
             my_gene.binding = int("".join(map(str, gene[9:12]))) 
             my_gene.quantifier = int("".join(map(str, gene[12:]))) 
 
@@ -67,10 +74,23 @@ class organism:
         for gene in self.gene_traits:
             if is_sensory(gene.index):
                 for other_gene in self.gene_traits:
-                    if !is_sensory(other_gene.index) and binds(gene.binding, other_gene.binding):
+                    if binds(gene.binding, other_gene.binding) and not is_sensory(other_gene.index):
+                        stimulus = environment.get_stimulus(gene.index)
+                        new_quantifier = apply_operator(gene.operator, stimulus*gene.quantifier, other_gene.quantifiers)
+                        other_gene.quantifier = new_quantifier
+
+    def apply_regulatory(self):
+        for gene in self.gene_traits:
+            if not is_sensory(gene.index) and  not is_trait(gene.index):
+                for other_gene in self.gene_traits:
+                    if is_trait(other_gene.index) and binds(gene.binding, other_gene.binding):
                         new_quantifier = apply_operator(gene.operator, gene.quantifier, other_gene.quantifiers)
                         other_gene.quantifier = new_quantifier
 
+    def apply_trait(self):
+        for gene in self.gene_traits:
+            if is_trait(gene.index):
+                self.apply_operator_to_trait(gene.index, gene.operator, gene.quantifier, gene.index)
 
 
 
@@ -79,7 +99,7 @@ def is_start_codon(codon):
     if codon[0] == 0 and codon[1] == 1:
         return True
     else:
-        return Falsel
+        return False
 
 # This should give us the end of a gene approximately 1/100 codons.
 def is_end_codon(codon):
@@ -88,7 +108,22 @@ def is_end_codon(codon):
     else:
         return False
 
-def is_sensory(codon):
+def is_sensory(index):
+    if index in stimuli:
+        return True
+    else:
+        return False
+
+def is_trait(index):
+    if index in traits:
+        return True
+    else:
+        return False
+
+def apply_operator_to_trait(self, index, operator, quantifier):
+    ## We should at this point be sure that the index corresponds to a valid trait
+    trait_type = traits[index]
+    self.traits[trait_type] = apply_operator(operator, quantifier, self.traits[trait_type])
 
 def binds(codon1, codon2):
     if codon1 == codon2:
@@ -143,9 +178,10 @@ class orgs:
     def translation(self, environment):
         for org in self.organisms:
             org.get_genes()
-            gene_traits = org.genes_to_traits()
-            org.apply_sensory(gene_traits, environment)
-            org.apply_regulatory(gene_traits, environment)
+            org.genes_to_traits()
+            org.apply_sensory(environment)
+            org.apply_regulatory()
+            org.apply_trait()
 
 
 class environment:
@@ -167,7 +203,7 @@ class environment:
             self.food -= 1
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 logging.debug("Starting!")
 
 environ = environment()
