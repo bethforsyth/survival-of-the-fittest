@@ -2,18 +2,25 @@ import random
 
 
 class environment:
-    def __init__(self):
-        self.size = 10
-        self.grid = grid_create()
-
     def grid_create(self):
         grid = []
         x = 0
         y = 0
         xrow = []
         while x < self.size:
-            xrow[y] = location(x, y)
+            xrow.append(location(x, y))
+            y += 1
+            if y >= self.size:
+                y = 0
+                x += 1
+                grid.append(xrow)
+                xrow = []
+        return grid
 
+    def __init__(self):
+        self.size = 10
+        self.grid = self.grid_create()
+        print(self.grid)
 
     def main(self, organisms):
         # Anything in environment that needs to change (e.g. plants grow)
@@ -27,20 +34,7 @@ class environment:
             organism = organisms.organisms[num]
             organism.health += self.food
             self.food -= 1
-# test
-grid = []
-counter1=0
-counter2=0
-xrow=[]
-while counter1 < 20:
-    xrow[counter2] = location(counter1, counter2)
-    counter2 += 1
-    if counter2 > 20:
-        counter2 = 0
-        counter1 += 1
-        grid.append(xrow)
-        xrow=[]
-print(grid)
+
 
 class location():
     """A location object to include position characteristics"""
